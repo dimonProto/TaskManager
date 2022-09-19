@@ -134,3 +134,47 @@ main {
   font-size: 20px;
   font-weight: 600;
 }
+.overlay{
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #0000000d;
+}
+.overlay.active{
+  display: block;
+}
+.box{
+  background-color: #fff;
+  position: absolute;
+  border-radius: 6px;
+  box-shadow: 0 0 40px #0003;
+}
+.box--list{
+  display: flex;
+  flex-direction: column;
+}
+.box--item:first-child{
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+.box--item{
+  display: flex;
+  align-items: center;
+  padding: 8px 4px;
+  background-color: #fff;
+  cursor: pointer;
+}
+.box--item svg{
+  width: 20px;
+  height: 20px;
+  margin-left: 4px;
+  position: absolute;
+}
+.box--item .delete--text{
+  user-select: none;
+  text-indent: 34px;
+  font-size: .9rem;
+}
