@@ -1,39 +1,28 @@
 import './App.css';
-import {ReactComponent as Plus} from './images/icons/plus.svg';
-import { useSelector, useDispatch } from 'react-redux'
-import { addSection } from './redux/slices/sectionSlice'
+import {useDispatch, useSelector} from 'react-redux'
+import {addSection, createTask} from './redux/slices/sectionSlice'
+import Section from "./componets/section";
+import CreateSection from "./componets/addSection";
+import Header from "./componets/header";
 
 function App() {
-    const count = useSelector((state) => state.section.value)
+    const sectionsBlocks = useSelector((state) => state.section.sections)
     const dispatch = useDispatch()
-    console.log(count, 'count')
 
+    console.log(sectionsBlocks,'sectionsBlocks')
   return (
     <div className="App">
-      <header>
-        <h1>Task manager </h1>
-      </header>
-      <main>
-        <div className="main--section">
-            <div className="section">
-                <div className="section--header">
-                    <div className="section--input">
-                        <input type="text" placeholder="Section label"/>
-                    </div>
-                    <div className="button--add" >
-                        <span > Add Task {count}</span>
-                        <Plus/>
-                    </div>
-                </div>
-
+          <Header/>
+          <main>
+            <div className="main--section">
+                { sectionsBlocks.map((el) => {
+                    return <Section key={el.id} onClick={() => dispatch(createTask( {sectionId:el.id}))} section={el}/>
+                })}
+                <CreateSection
+                    addSection={() => dispatch(addSection())}
+                />
             </div>
-            <div className="add--section" onClick={() => dispatch(addSection())}>
-                <span>Add section</span>
-               <Plus/>
-            </div>
-
-        </div>
-      </main>
+          </main>
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
+import {uid} from "uid";
 
 const initialState = {
-    value: 0,
+    sections: [],
 }
 
 export const sectionSlice = createSlice({
@@ -9,17 +10,22 @@ export const sectionSlice = createSlice({
     initialState,
     reducers: {
         addSection: (state) => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the Immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
-            state.value += 1
+            state.sections.push({
+                id: uid(),
+                tasks: []
+            })
         },
-
+        createTask: (state, action) => {
+           const targetSection = state.sections.find(el => el.id === action.payload.sectionId)
+            targetSection.tasks.push({
+                id: uid(),
+                name: 'New task'
+            })
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { addSection } = sectionSlice.actions
+export const { addSection, createTask } = sectionSlice.actions
 
 export default sectionSlice.reducer
