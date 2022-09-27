@@ -12,7 +12,9 @@ export const sectionSlice = createSlice({
         addSection: (state) => {
             state.sections.push({
                 id: uid(),
-                tasks: []
+                tasks: [],
+                name: 'New Section',
+                color: '#cbcbcb',
             })
         },
         createTask: (state, action) => {
@@ -22,10 +24,18 @@ export const sectionSlice = createSlice({
                 name: 'New task'
             })
         },
+        changeSectionName: (state, action) => {
+            const targetSection = state.sections.find(el => el.id === action.payload.sectionId)
+            targetSection.name = action.payload.newName
+        },
+        changeColorSection: (state, action) => {
+            const targetSection = state.sections.find(el => el.id === action.payload.sectionId)
+            targetSection.map(el => el.color = action.payload.color)
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { addSection, createTask } = sectionSlice.actions
+export const { addSection, createTask, changeSectionName, changeColorSection } = sectionSlice.actions
 
 export default sectionSlice.reducer
