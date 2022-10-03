@@ -9,7 +9,7 @@ import SectionContextModal from "./componets/modal/sectionModal";
 import TaskContextModal from "./componets/modal/taskModal";
 
 function App() {
-    const sectionsBlocks = useSelector((state) => state.section.sections);
+    const sectionsBlocks = useSelector((state) => state.section.sections );
     const dispatch = useDispatch();
     const [showSectionModal, setSectionModal] = useState(false)
     const [showTaskModal, setTaskModal] = useState(false)
@@ -43,7 +43,6 @@ function App() {
         toggleSectionModal()
     }
 
-
   return (
     <div className="App">
           <Header/>
@@ -57,6 +56,12 @@ function App() {
                         activeModal={ handleModal}
                         setSectionId={setSectionId}
                         changeName={(newName) => dispatch(changeSectionName({sectionId:el.id, newName}))}
+                        toggleTaskModal={toggleTaskModal}
+                        showTaskModal={showTaskModal}
+                        cursorPosition={cursorPosition}
+                        showSectionModal={showSectionModal}
+                        toggleSectionModal={toggleSectionModal}
+                        handleAddTask={handleAddTask}
                     />
                 })}
                 <CreateSection
@@ -64,16 +69,6 @@ function App() {
                 />
             </div>
           </main>
-        {showSectionModal && <SectionContextModal
-            onClick={toggleSectionModal}
-            cursorPosition={cursorPosition}
-            addTask={handleAddTask}
-            sectionId={sectionId}
-        />}
-        {showTaskModal && <TaskContextModal
-            onClick={toggleTaskModal}
-            cursorPosition={cursorPosition}
-        />}
     </div>
   );
 }

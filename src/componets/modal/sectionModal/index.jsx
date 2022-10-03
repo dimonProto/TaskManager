@@ -1,15 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ModalWrapper from "../index";
  import {ReactComponent as Delete} from '../../../images/icons/delete.svg';
  import {ReactComponent as Plus} from '../../../images/icons/plus.svg';
-import {colors} from "../../../utils/constant";
-import {useDispatch, useSelector} from "react-redux";
+import {COLORS} from "../../../utils/constant";
+import {useDispatch} from "react-redux";
 import {changeColorSection} from "../../../redux/slices/sectionSlice";
 
-const SectionContextModal = ({addTask,sectionId, ...props}) => {
-   const sectionColor = useSelector((state) => state.section.sections)
+const SectionContextModal = ({addTask,sectionId, color:sectionColor, ...props}) => {
     const dispatch = useDispatch()
-    console.log(sectionColor)
+    const [currentColor] = useState(sectionColor)
+    const handleColor = (color) => {
+        dispatch(changeColorSection({sectionId:sectionId ,sectionColor: color}))
+    }
+    console.log(sectionId,'sectionId')
     return (
         <ModalWrapper {...props}>
             <ul className="box--list">
@@ -22,10 +25,11 @@ const SectionContextModal = ({addTask,sectionId, ...props}) => {
                 </li>
                 <li className="box--item">
                     <ul className="colors" >
-                        {colors.map((color, idx) => {
+                        {currentColor}
+                        {COLORS.map((color, idx) => {
                             return (
-                                <li className={`colors--item ${sectionColor.map(el => el.color === color && 'active') } ` }
-                                    onClick={() => dispatch(changeColorSection({sectionId:sectionId ,sectionColor: color}))}
+                                <li className={`colors--item ${currentColor === color && 'active'}`}
+                                    onClick={() => handleColor(color, idx)}
                                     key={idx} style={{background: `${color}`}}></li>
                             )
                         })}

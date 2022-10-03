@@ -29,8 +29,11 @@ export const sectionSlice = createSlice({
             targetSection.name = action.payload.newName
         },
         changeColorSection: (state, action) => {
-            const targetSection = state.sections.find(el => el.id === action.payload.sectionId)
-            targetSection.map(el => el.color = action.payload.color)
+            state.sections.map(el => {
+                if(el.id === action.payload.sectionId){
+                    el.color = action.payload.sectionColor
+                }
+            })
         },
     },
 })
