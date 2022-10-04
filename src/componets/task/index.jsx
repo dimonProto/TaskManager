@@ -1,7 +1,7 @@
 import React from 'react';
 import TaskContextModal from "../modal/taskModal";
 
-const Task = ({section,rightClickTask, toggleTaskModal, showTaskModal, cursorPosition}) => {
+const Task = ({section,rightClickTask, toggleTaskModal, showTaskModal, cursorPosition, taskId, sectionId}) => {
     return (
         <>
         <ul className="list--tasks">
@@ -15,6 +15,8 @@ const Task = ({section,rightClickTask, toggleTaskModal, showTaskModal, cursorPos
         {showTaskModal && <TaskContextModal
             onClick={toggleTaskModal}
             cursorPosition={cursorPosition}
+            taskId={taskId}
+            sectionId={sectionId}
         />}
         </>
     );

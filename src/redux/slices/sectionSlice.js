@@ -35,10 +35,17 @@ export const sectionSlice = createSlice({
                 }
             })
         },
+        deleteSection: (state, action) => {
+             state.sections = state.sections.filter(section => section.id !== action.payload)
+        },
+        deleteTask: (state, action) => {
+            const findSection =  state.sections.find(el => el.id === action.payload.sectionId)
+            findSection.tasks =  findSection.tasks.filter(task => task.id !== action.payload.taskId)
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { addSection, createTask, changeSectionName, changeColorSection } = sectionSlice.actions
+export const { addSection, createTask, changeSectionName, changeColorSection, deleteSection, deleteTask } = sectionSlice.actions
 
 export default sectionSlice.reducer
