@@ -24,9 +24,25 @@ export const sectionSlice = createSlice({
                 name: 'New task'
             })
         },
+        moveTask: (state, action) => {
+            if (action.payload.oldSectionId === action.payload.newSectionId) return
+            const oldSection = state.sections.find(section => section.id === action.payload.oldSectionId)
+            const newSection = state.sections.find(section => section.id === action.payload.newSectionId)
+            const taskIndex = oldSection.tasks.findIndex(task => task.id === action.payload.taskId)
+            const cutedTask = oldSection.tasks.splice(taskIndex, 1)[0]
+            newSection.tasks.push(cutedTask)
+        },
         changeSectionName: (state, action) => {
             const targetSection = state.sections.find(el => el.id === action.payload.sectionId)
             targetSection.name = action.payload.newName
+        },
+        changeTaskName: (state, action) => {
+            const findSection = state.sections.find(section => section.id === action.payload.sectionId)
+            findSection.tasks.map(task => {
+                if(task.id === action.payload.taskId){
+                    task.name = action.payload.taskName
+                }
+            })
         },
         changeColorSection: (state, action) => {
             state.sections.map(el => {
@@ -46,6 +62,15 @@ export const sectionSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { addSection, createTask, changeSectionName, changeColorSection, deleteSection, deleteTask } = sectionSlice.actions
+export const {
+    addSection,
+    createTask,
+    changeSectionName,
+    changeColorSection,
+    deleteSection,
+    deleteTask,
+    changeTaskName,
+    moveTask,
+} = sectionSlice.actions
 
 export default sectionSlice.reducer

@@ -6,7 +6,7 @@ import {COLORS} from "../../../utils/constant";
 import {useDispatch} from "react-redux";
 import {changeColorSection, deleteSection} from "../../../redux/slices/sectionSlice";
 
-const SectionContextModal = ({addTask,sectionId, color:sectionColor, ...props}) => {
+const SectionContextModal = ({addTask,sectionId,sectionName,changeName, color:sectionColor, ...props}) => {
     const dispatch = useDispatch()
 
     const handleColor = (color) => {
@@ -25,7 +25,7 @@ const SectionContextModal = ({addTask,sectionId, color:sectionColor, ...props}) 
                     <span className="delete--text">Add task</span>
                 </li>
                 <li className="box--item">
-                    <input type="text" />
+                    <input type="text" value={sectionName} onChange={event => changeName(event.target.value)} />
                 </li>
                 <li className="box--item">
                     <ul className="colors" >

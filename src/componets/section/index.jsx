@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState} from 'react';
 import {ReactComponent as Plus} from "../../images/icons/plus.svg";
-import Task from "../task";
 import SectionContextModal from "../modal/sectionModal";
 import {createTask} from "../../redux/slices/sectionSlice";
 import {useDispatch} from 'react-redux'
-const Section = ({addTask, section, changeName}) => {
+import TaskList from "../taskList";
+
+const Section = ({addTask, section, changeName, ...props}) => {
     const [showSectionModal, setSectionModal] = useState(false)
     const [showTaskModal, setTaskModal] = useState(false)
     const [cursorPosition, setCursorPosition] = useState({
@@ -12,6 +13,7 @@ const Section = ({addTask, section, changeName}) => {
         pageY:0
     })
     const [taskId, setTaskId] = useState('')
+    const [taskName, setTaskName] = useState('')
     const dispatch = useDispatch();
 
     const handleModal = (e,taskId) => {
@@ -31,6 +33,7 @@ const Section = ({addTask, section, changeName}) => {
         }
     };
 
+
     const toggleSectionModal = () =>  setSectionModal(!showSectionModal)
     const toggleTaskModal = () =>  setTaskModal(!showTaskModal)
 
@@ -43,15 +46,18 @@ const Section = ({addTask, section, changeName}) => {
         handleModal(e,taskId)
     }
 
-    const rightClickTask = (e,taskId) => {
+    const rightClickTask = (e,taskId, name) => {
         e.stopPropagation()
         rightClickSection(e,taskId)
         setTaskId(taskId)
+        setTaskName(name)
     }
 
     return (
         <>
-        <div className="section"   onContextMenu={(e) => rightClickSection(e)} >
+        <div className="section"   onContextMenu={(e) => rightClickSection(e)}
+
+        >
             <div className="section--header" >
                 <div className="section--input" style={{backgroundColor: `${section.color}`}}>
                     <input type="text"  placeholder="Section label" value={section.name}
@@ -63,14 +69,17 @@ const Section = ({addTask, section, changeName}) => {
                     <Plus />
                 </div>
             </div>
-            <Task
+            <TaskList
                 section={section}
                 rightClickTask={rightClickTask}
                 toggleTaskModal={toggleTaskModal}
                 showTaskModal={showTaskModal}
                 cursorPosition={cursorPosition}
                 taskId={taskId}
-                sectionId={section.id}
+                taskName={taskName}
+                setTaskName={setTaskName}
+
+                {...props}
             />
         </div>
         {showSectionModal && <SectionContextModal
@@ -79,6 +88,8 @@ const Section = ({addTask, section, changeName}) => {
             addTask={handleAddTask}
             sectionId={section.id}
             color={section.color}
+            sectionName={section.name}
+            changeName={changeName}
         />}
         </>
     );
