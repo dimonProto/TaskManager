@@ -5,17 +5,14 @@ import Section from "./componets/section";
 import CreateSection from "./componets/addSection";
 import Header from "./componets/header";
 import {useState} from "react";
+import {SIZE_SECTION} from "./utils/constant";
 
 
 function App() {
     const sectionsBlocks = useSelector((state) => state.section.sections );
     const dispatch = useDispatch();
     const [currentTask, setCurrentTask] = useState(null)
-    const [currentSectionId, setCurrentSectionId] = useState(null)
     const [oldSectionId, setOldSectionId] = useState('')
-
-    console.log(sectionsBlocks)
-    const sizeSection = 278
 
     const startHandler = (e, task, sectionId) => {
         setCurrentTask(task)
@@ -24,16 +21,13 @@ function App() {
 
     const overHandler = (e) => {
         e.preventDefault()
-        const idxSection = Math.floor(e.screenX / sizeSection)
-        const sectionId = sectionsBlocks[idxSection].id
-        setCurrentSectionId(sectionId)
-        console.log({currentSectionId,  oldSectionId, idxSection})
     }
 
     const dropHandler = (e) => {
         e.preventDefault()
-        console.log(currentSectionId, currentTask.id, oldSectionId)
-        dispatch(moveTask({newSectionId: currentSectionId, taskId: currentTask.id, oldSectionId}))
+        const idxSection = Math.floor(e.screenX / SIZE_SECTION)
+        const sectionId = sectionsBlocks[idxSection].id
+        dispatch(moveTask({newSectionId: sectionId, taskId: currentTask.id, oldSectionId}))
     }
 
   return (
