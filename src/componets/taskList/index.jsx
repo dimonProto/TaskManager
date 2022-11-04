@@ -4,20 +4,19 @@ import TaskContextModal from "../modal/taskModal";
 
 const TaskList = ({section,rightClickTask, toggleTaskModal, showTaskModal, cursorPosition, taskId,taskName, setTaskName,
                       startHandler,
-                      overHandler,
-                      dropHandler
+                      dropHandler,
+                      endHandler,
 }) => {
-
 
     return (
         <>
         <ul className="list--tasks">
-            { section.tasks.map((task) =>
+            { section.tasks.map((task, idx) =>
                 <li className="task"
                     draggable
-                    onDragStart={(e) => startHandler(e, task, section.id)}
-                    onDrag={overHandler}
-                    onDragEnd={dropHandler}
+                    onDragStart={(e) => startHandler(e, task, section, idx)}
+                    onDrag={(e) => dropHandler(e, task)}
+                    onDragEnd={endHandler}
                     style={{borderColor: `${section.color}`}}
                     onContextMenu={(e) => rightClickTask(e, task.id, task.name)} key={task.id} >
                     { task.name}

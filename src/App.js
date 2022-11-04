@@ -13,21 +13,28 @@ function App() {
     const dispatch = useDispatch();
     const [currentTask, setCurrentTask] = useState(null)
     const [oldSectionId, setOldSectionId] = useState('')
+    const [oldTaskId, setOldTaskId] = useState('')
 
-    const startHandler = (e, task, sectionId) => {
+    const startHandler = (e, task, sectionId, idx) => {
+        console.log(idx, 'oldIndexTask')
+        console.log(e.nativeEvent.path[1])
+        setOldTaskId(idx)
         setCurrentTask(task)
         setOldSectionId(sectionId)
     }
 
-    const overHandler = (e) => {
-        e.preventDefault()
-    }
-
     const dropHandler = (e) => {
         e.preventDefault()
+        console.log(e)
+    }
+
+    const endHandler = (e) => {
+        e.preventDefault()
+        console.log( +e.pageX - +e.target.offsetLeft, +e.pageY - +e.target.offsetTop)
         const idxSection = Math.floor(e.screenX / SIZE_SECTION)
         const sectionId = sectionsBlocks[idxSection].id
-        dispatch(moveTask({newSectionId: sectionId, taskId: currentTask.id, oldSectionId}))
+        console.log(oldTaskId, sectionId)
+        dispatch(moveTask({newSectionId: sectionId, taskId: currentTask.id, oldSectionId: oldSectionId.id}))
     }
 
   return (
@@ -37,10 +44,9 @@ function App() {
             <div className="main--section"  >
                 { sectionsBlocks.map((el) => {
                     return <Section
-
                         startHandler={startHandler}
-                        overHandler={overHandler}
                         dropHandler={dropHandler}
+                        endHandler={endHandler}
                         key={el.id}
                         addTask={() => dispatch(createTask( {sectionId:el.id}))}
                         section={el}
