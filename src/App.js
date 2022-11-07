@@ -4,7 +4,7 @@ import {addSection, changeSectionName, createTask, deleteTask, moveTask} from '.
 import Section from "./componets/section";
 import CreateSection from "./componets/addSection";
 import Header from "./componets/header";
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {SIZE_SECTION} from "./utils/constant";
 
 
@@ -14,10 +14,9 @@ function App() {
     const [currentTask, setCurrentTask] = useState(null)
     const [oldSectionId, setOldSectionId] = useState('')
     const [oldTaskId, setOldTaskId] = useState('')
+    const newPositionTask = useRef()
 
     const startHandler = (e, task, sectionId, idx) => {
-        console.log(idx, 'oldIndexTask')
-        console.log(e.nativeEvent.path[1])
         setOldTaskId(idx)
         setCurrentTask(task)
         setOldSectionId(sectionId)
@@ -30,8 +29,7 @@ function App() {
 
     const endHandler = (e) => {
         e.preventDefault()
-        console.log( +e.pageX - +e.target.offsetLeft, +e.pageY - +e.target.offsetTop)
-        const idxSection = Math.floor(e.screenX / SIZE_SECTION)
+        const idxSection = Math.floor(e.pageX / SIZE_SECTION)
         const sectionId = sectionsBlocks[idxSection].id
         console.log(oldTaskId, sectionId)
         dispatch(moveTask({newSectionId: sectionId, taskId: currentTask.id, oldSectionId: oldSectionId.id}))
