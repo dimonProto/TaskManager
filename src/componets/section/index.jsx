@@ -55,9 +55,7 @@ const Section = ({addTask, section, changeName, ...props}) => {
 
     return (
         <>
-        <div className="section"   onContextMenu={(e) => rightClickSection(e)}
-
-        >
+        <div className="section"   onContextMenu={(e) => rightClickSection(e)}>
             <div className="section--header" >
                 <div className="section--input" style={{backgroundColor: `${section.color}`}}>
                     <input type="text"  placeholder="Section label" value={section.name}
