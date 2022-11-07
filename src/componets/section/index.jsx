@@ -5,7 +5,7 @@ import {createTask} from "../../redux/slices/sectionSlice";
 import {useDispatch} from 'react-redux'
 import TaskList from "../taskList";
 
-const Section = ({addTask, section, changeName, ...props}) => {
+const Section = ({addTask, section, changeName,newPositionTask, ...props}) => {
     const [showSectionModal, setSectionModal] = useState(false)
     const [showTaskModal, setTaskModal] = useState(false)
     const [cursorPosition, setCursorPosition] = useState({
@@ -56,7 +56,7 @@ const Section = ({addTask, section, changeName, ...props}) => {
     return (
         <>
         <div className="section"   onContextMenu={(e) => rightClickSection(e)}>
-            <div className="section--header" >
+            <div className="section--header"  >
                 <div className="section--input" style={{backgroundColor: `${section.color}`}}>
                     <input type="text"  placeholder="Section label" value={section.name}
                            onChange={(e) => changeName(e.target.value)}
@@ -76,7 +76,6 @@ const Section = ({addTask, section, changeName, ...props}) => {
                 taskId={taskId}
                 taskName={taskName}
                 setTaskName={setTaskName}
-
                 {...props}
             />
         </div>

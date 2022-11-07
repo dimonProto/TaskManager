@@ -12,34 +12,51 @@ function App() {
     const sectionsBlocks = useSelector((state) => state.section.sections );
     const dispatch = useDispatch();
     const [currentTask, setCurrentTask] = useState(null)
-    const [oldSectionId, setOldSectionId] = useState('')
-    const [oldTaskId, setOldTaskId] = useState('')
-    const newPositionTask = useRef()
+    const [oldSectionId, setOldSectionId] = useState(null)
+    const [oldTaskPosition, setOldTaskPosition] = useState(null)
+    const sectionsRef = useRef()
 
     const startHandler = (e, task, sectionId, idx) => {
-        setOldTaskId(idx)
+        setOldTaskPosition(idx)
         setCurrentTask(task)
         setOldSectionId(sectionId)
     }
 
     const dropHandler = (e) => {
         e.preventDefault()
-        console.log(e)
     }
+    const currentPositionTask = (e) => {
+        const sectionTop = sectionsRef && sectionsRef.current.getBoundingClientRect().top
+        const heightTask = 60
+        console.log(Math.floor((e.pageY - sectionTop) / heightTask))
+        return Math.floor((e.pageY - sectionTop) / heightTask)
+    }
+
 
     const endHandler = (e) => {
         e.preventDefault()
         const idxSection = Math.floor(e.pageX / SIZE_SECTION)
         const sectionId = sectionsBlocks[idxSection].id
-        console.log(oldTaskId, sectionId)
-        dispatch(moveTask({newSectionId: sectionId, taskId: currentTask.id, oldSectionId: oldSectionId.id}))
+        currentPositionTask(e)
+
+        const task = {
+            taskId: currentTask.id,
+            oldTaskPosition: oldTaskPosition,
+            newTaskPosition: currentPositionTask(e),
+        }
+
+        dispatch(moveTask({
+            newSectionId: sectionId,
+            oldSectionId: oldSectionId.id,
+            task
+        }))
     }
 
   return (
     <div className="App">
           <Header/>
           <main>
-            <div className="main--section"  >
+            <div className="main--section"  ref={sectionsRef}>
                 { sectionsBlocks.map((el) => {
                     return <Section
                         startHandler={startHandler}
