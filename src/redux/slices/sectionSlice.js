@@ -31,14 +31,9 @@ export const sectionSlice = createSlice({
             const oldSection = state.sections.findById(oldSectionId)
             const newSection = state.sections.findById(newSectionId)
 
-            if (oldSectionId === newSectionId) {
-                const cut = oldSection.tasks.splice(task.oldTaskPosition, 1)[0]
-                newSection.tasks.splice(task.newTaskPosition, 0, cut)
-            }
+                const cut = oldSection.tasks.splice(task.oldPosition, 1)[0]
+                newSection.tasks.splice(task.newPosition, 0, cut)
 
-            const taskIndex = oldSection.tasks.findIndex(task => task.id === task.taskId)
-            const cutOutTask = oldSection.tasks.splice(taskIndex, 1)[0]
-            newSection.tasks.push(cutOutTask)
         },
         changeSectionName: (state, action) => {
             const targetSection = state.sections.find(el => el.id === action.payload.sectionId)
@@ -48,6 +43,7 @@ export const sectionSlice = createSlice({
             const findSection = state.sections.findById(action.payload.sectionId)
 
             findSection.tasks.map(task => {
+
                 if(task.id === action.payload.taskId){
                     task.name = action.payload.taskName
                 }

@@ -5,20 +5,18 @@ import Section from "./componets/section";
 import CreateSection from "./componets/addSection";
 import Header from "./componets/header";
 import {useRef, useState} from "react";
-import {SIZE_SECTION} from "./utils/constant";
+import {HEIGHT_TASK, SIZE_SECTION} from "./utils/constant";
 
 
 function App() {
     const sectionsBlocks = useSelector((state) => state.section.sections );
     const dispatch = useDispatch();
-    const [currentTask, setCurrentTask] = useState(null)
     const [oldSectionId, setOldSectionId] = useState(null)
     const [oldTaskPosition, setOldTaskPosition] = useState(null)
     const sectionsRef = useRef()
 
     const startHandler = (e, task, sectionId, idx) => {
         setOldTaskPosition(idx)
-        setCurrentTask(task)
         setOldSectionId(sectionId)
     }
 
@@ -27,9 +25,7 @@ function App() {
     }
     const currentPositionTask = (e) => {
         const sectionTop = sectionsRef && sectionsRef.current.getBoundingClientRect().top
-        const heightTask = 60
-        console.log(Math.floor((e.pageY - sectionTop) / heightTask))
-        return Math.floor((e.pageY - sectionTop) / heightTask)
+        return Math.floor((e.pageY - sectionTop) / HEIGHT_TASK)
     }
 
 
@@ -38,11 +34,9 @@ function App() {
         const idxSection = Math.floor(e.pageX / SIZE_SECTION)
         const sectionId = sectionsBlocks[idxSection].id
         currentPositionTask(e)
-
         const task = {
-            taskId: currentTask.id,
-            oldTaskPosition: oldTaskPosition,
-            newTaskPosition: currentPositionTask(e),
+            oldPosition: oldTaskPosition,
+            newPosition: currentPositionTask(e),
         }
 
         dispatch(moveTask({
