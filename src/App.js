@@ -6,6 +6,7 @@ import CreateSection from "./componets/addSection";
 import Header from "./componets/header";
 import {useRef, useState} from "react";
 import {HEIGHT_TASK, SIZE_SECTION} from "./utils/constant";
+import Task from "./componets/taskList/task";
 
 
 function App() {
@@ -13,12 +14,23 @@ function App() {
     const dispatch = useDispatch();
     const [oldSectionId, setOldSectionId] = useState(null)
     const [oldTaskPosition, setOldTaskPosition] = useState(null)
+    const [fakeTask, setFakeTask] = useState(null)
     const sectionsRef = useRef()
+    const fakeTaskRef = useRef()
+
+    const positionFakeTask = (left, top) => {
+        if (!fakeTaskRef) return null
+        fakeTaskRef.current.style.left = left.toString() + 'px'
+        fakeTaskRef.current.style.top = top.toString() + 'px'
+    }
 
     const startHandler = (e, task, sectionId, idx) => {
         setOldTaskPosition(idx)
         setOldSectionId(sectionId)
+        positionFakeTask(e.target.getBoundingClientRect().left, e.target.getBoundingClientRect().top)
+        setFakeTask(task)
     }
+
 
     const dropHandler = (e) => {
         e.preventDefault()
@@ -34,6 +46,7 @@ function App() {
         const idxSection = Math.floor(e.pageX / SIZE_SECTION)
         const sectionId = sectionsBlocks[idxSection].id
         currentPositionTask(e)
+        setFakeTask(null)
         const task = {
             oldPosition: oldTaskPosition,
             newPosition: currentPositionTask(e),
@@ -45,10 +58,14 @@ function App() {
             task
         }))
     }
-
+    console.log(fakeTaskRef)
   return (
     <div className="App">
           <Header/>
+          <span ref={fakeTaskRef} style={{position: "fixed", opacity:'0.5' }}>
+              {fakeTask && <Task task={ fakeTask} style={{width: '235px'}}/>}
+          </span>
+
           <main>
             <div className="main--section"  ref={sectionsRef}>
                 { sectionsBlocks.map((el) => {

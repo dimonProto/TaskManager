@@ -1,26 +1,36 @@
 import React from 'react';
 import TaskContextModal from "../modal/taskModal";
+import Task from "./task";
 
 
-const TaskList = ({section,rightClickTask, toggleTaskModal, showTaskModal, cursorPosition, taskId,taskName, setTaskName,
-                      startHandler,
-                      dropHandler,
-                      endHandler,
+const TaskList = (
+    {
+      section,
+      rightClickTask,
+      toggleTaskModal,
+      showTaskModal,
+      cursorPosition,
+      taskId,
+      taskName,
+      setTaskName,
+      ...props
 }) => {
 
     return (
         <>
         <ul className="list--tasks">
             { section.tasks.map((task, idx) =>
-                <li className="task"
-                    draggable
-                    onDragStart={(e) => startHandler(e, task, section, idx)}
-                    onDrag={(e) => dropHandler(e, task)}
-                    onDragEnd={endHandler}
-                    style={{borderColor: `${section.color}`}}
-                    onContextMenu={(e) => rightClickTask(e, task.id, task.name)} key={task.id} >
-                    { task.name}
-                </li>)}
+                // <li className="task"
+                //     draggable
+                //     onDragStart={(e) => startHandler(e, task, section, idx)}
+                //     onDrag={(e) => dropHandler(e, task)}
+                //     onDragEnd={endHandler}
+                //     style={{borderColor: `${section.color}`}}
+                //     onContextMenu={(e) => rightClickTask(e, task.id, task.name)} key={task.id} >
+                //     { task.name}
+                // </li>
+                <Task task={task} section={section} idx={idx} rightClickTask={rightClickTask} {...props}/>
+            )}
             <li className="task"
                 style={{borderColor: `${section.color}`}}
                >

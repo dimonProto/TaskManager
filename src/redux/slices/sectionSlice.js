@@ -31,8 +31,8 @@ export const sectionSlice = createSlice({
             const oldSection = state.sections.findById(oldSectionId)
             const newSection = state.sections.findById(newSectionId)
 
-                const cut = oldSection.tasks.splice(task.oldPosition, 1)[0]
-                newSection.tasks.splice(task.newPosition, 0, cut)
+            const cut = oldSection.tasks.splice(task.oldPosition, 1)[0]
+            newSection.tasks.splice(task.newPosition, 0, cut)
 
         },
         changeSectionName: (state, action) => {
