@@ -16,21 +16,20 @@ function App() {
     const [oldTaskPosition, setOldTaskPosition] = useState(null)
     const [fakeTask, setFakeTask] = useState(null)
     const sectionsRef = useRef()
-    const fakeTaskRef = useRef()
+    const phantomRef = useRef()
 
-    const positionFakeTask = (left, top) => {
-        if (!fakeTaskRef) return null
-        fakeTaskRef.current.style.left = left.toString() + 'px'
-        fakeTaskRef.current.style.top = top.toString() + 'px'
+    const setPositionPhantom = (left, top) => {
+        if (!phantomRef) return null
+        phantomRef.current.style.left = left.toString() + 'px'
+        phantomRef.current.style.top = top.toString() + 'px'
     }
 
     const startHandler = (e, task, sectionId, idx) => {
         setOldTaskPosition(idx)
         setOldSectionId(sectionId)
-        positionFakeTask(e.target.getBoundingClientRect().left, e.target.getBoundingClientRect().top)
+        setPositionPhantom(e.target.getBoundingClientRect().left, e.target.getBoundingClientRect().top)
         setFakeTask(task)
     }
-
 
     const dropHandler = (e) => {
         e.preventDefault()
@@ -39,7 +38,6 @@ function App() {
         const sectionTop = sectionsRef && sectionsRef.current.getBoundingClientRect().top
         return Math.floor((e.pageY - sectionTop) / HEIGHT_TASK)
     }
-
 
     const endHandler = (e) => {
         e.preventDefault()
@@ -54,18 +52,16 @@ function App() {
 
         dispatch(moveTask({
             newSectionId: sectionId,
-            oldSectionId: oldSectionId.id,
+            oldSectionId: oldSectionId,
             task
         }))
     }
-    console.log(fakeTaskRef)
   return (
     <div className="App">
           <Header/>
-          <span ref={fakeTaskRef} style={{position: "fixed", opacity:'0.5' }}>
+          <span ref={phantomRef} style={{position: "fixed", opacity:'0.5' }}>
               {fakeTask && <Task task={ fakeTask} style={{width: '235px'}}/>}
           </span>
-
           <main>
             <div className="main--section"  ref={sectionsRef}>
                 { sectionsBlocks.map((el) => {

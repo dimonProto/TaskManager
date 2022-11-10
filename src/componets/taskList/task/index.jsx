@@ -5,7 +5,7 @@ const Task = ({color, section, idx, task,startHandler,dropHandler,endHandler,rig
         <li className="task"
             style={style}
             draggable
-            onDragStart={(e) => startHandler(e, task, section, idx)}
+            onDragStart={(e) => startHandler(e, task, section.id, idx)}
             onDrag={(e) => dropHandler(e, task)}
             onDragEnd={endHandler}
             color={color}
