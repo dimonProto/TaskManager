@@ -1,6 +1,8 @@
 import React from 'react';
 
 const Task = ({color, section, idx, task,startHandler,dropHandler,endHandler,rightClickTask, style}) => {
+    if(!task) return
+
     return (
         <li className="task"
             style={style}

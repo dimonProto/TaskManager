@@ -14,7 +14,7 @@ function App() {
     const dispatch = useDispatch();
     const [oldSectionId, setOldSectionId] = useState(null)
     const [oldTaskPosition, setOldTaskPosition] = useState(null)
-    const [fakeTask, setFakeTask] = useState(null)
+    const [phantomTask, setPhantomTask] = useState(null)
     const sectionsRef = useRef()
     const phantomRef = useRef()
 
@@ -28,7 +28,7 @@ function App() {
         setOldTaskPosition(idx)
         setOldSectionId(sectionId)
         setPositionPhantom(e.target.getBoundingClientRect().left, e.target.getBoundingClientRect().top)
-        setFakeTask(task)
+        setPhantomTask(task)
     }
 
     const dropHandler = (e) => {
@@ -43,8 +43,7 @@ function App() {
         e.preventDefault()
         const idxSection = Math.floor(e.pageX / SIZE_SECTION)
         const sectionId = sectionsBlocks[idxSection].id
-        currentPositionTask(e)
-        setFakeTask(null)
+        setPhantomTask(null)
         const task = {
             oldPosition: oldTaskPosition,
             newPosition: currentPositionTask(e),
@@ -60,7 +59,7 @@ function App() {
     <div className="App">
           <Header/>
           <span ref={phantomRef} style={{position: "fixed", opacity:'0.5' }}>
-              {fakeTask && <Task task={ fakeTask} style={{width: '235px'}}/>}
+               <Task task={ phantomTask} style={{width: '235px'}}/>
           </span>
           <main>
             <div className="main--section"  ref={sectionsRef}>
