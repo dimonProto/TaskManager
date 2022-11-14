@@ -136,6 +136,13 @@ main {
   position: relative;
   font-size: 20px;
   font-weight: 600;
+  width: 100%;
+  max-width: 252px;
+}
+.phantom{
+  position: fixed;
+  background-color:#fdf8ff;
+  width: 252px;
 }
 .task:hover {
   background-color: #fdf8ff;

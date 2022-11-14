@@ -1,13 +1,12 @@
 import './App.css';
 import {useDispatch, useSelector} from 'react-redux'
-import {addSection, changeSectionName, createTask, deleteTask, moveTask} from './redux/slices/sectionSlice'
+import {addSection, changeSectionName, createTask, moveTask} from './redux/slices/sectionSlice'
 import Section from "./componets/section";
 import CreateSection from "./componets/addSection";
 import Header from "./componets/header";
 import {useRef, useState} from "react";
 import {HEIGHT_TASK, SIZE_SECTION} from "./utils/constant";
 import Task from "./componets/taskList/task";
-
 
 function App() {
     const sectionsBlocks = useSelector((state) => state.section.sections );
@@ -24,7 +23,22 @@ function App() {
         phantomRef.current.style.top = top.toString() + 'px'
     }
 
-    const startHandler = (e, task, sectionId, idx) => {
+    const startHandler = (e, task, sectionId, idx, targetElement) => {
+
+        if(e.dataTransfer.setDragImage){
+            const clone = targetElement.cloneNode(true)
+
+            clone.style.left ='-9000px'
+            clone.style.position ='absolute'
+
+            const cloneLi =  document.body.appendChild(clone)
+            e.dataTransfer.setDragImage(clone,0,0)
+
+            setTimeout(() => {
+                targetElement.style.visibility='hidden'
+                document.body.removeChild(cloneLi)
+            },10)
+        }
         setOldTaskPosition(idx)
         setOldSectionId(sectionId)
         setPositionPhantom(e.target.getBoundingClientRect().left, e.target.getBoundingClientRect().top)
@@ -33,17 +47,20 @@ function App() {
 
     const dropHandler = (e) => {
         e.preventDefault()
+        e.dataTransfer.clearData();
     }
     const currentPositionTask = (e) => {
         const sectionTop = sectionsRef && sectionsRef.current.getBoundingClientRect().top
         return Math.floor((e.pageY - sectionTop) / HEIGHT_TASK)
     }
 
-    const endHandler = (e) => {
+    const endHandler = (e, targetElement) => {
         e.preventDefault()
         const idxSection = Math.floor(e.pageX / SIZE_SECTION)
         const sectionId = sectionsBlocks[idxSection].id
         setPhantomTask(null)
+        targetElement.style.visibility='visible'
+
         const task = {
             oldPosition: oldTaskPosition,
             newPosition: currentPositionTask(e),
@@ -54,12 +71,13 @@ function App() {
             oldSectionId: oldSectionId,
             task
         }))
+
     }
   return (
     <div className="App">
           <Header/>
-          <span ref={phantomRef} style={{position: "fixed", opacity:'0.5' }}>
-               <Task task={ phantomTask} style={{width: '235px'}}/>
+          <span ref={phantomRef} className='phantom' >
+               <Task task={phantomTask} />
           </span>
           <main>
             <div className="main--section"  ref={sectionsRef}>

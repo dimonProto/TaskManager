@@ -3,8 +3,7 @@ import TaskContextModal from "../modal/taskModal";
 import Task from "./task";
 
 
-const TaskList = (
-    {
+const TaskList = ({
       section,
       rightClickTask,
       toggleTaskModal,
@@ -20,7 +19,7 @@ const TaskList = (
         <>
         <ul className="list--tasks">
             { section.tasks.map((task, idx) =>
-                <Task key={task.id} task={task} section={section} idx={idx} rightClickTask={rightClickTask} {...props}/>
+                <Task key={task.id + idx} task={task} section={section} idx={idx} rightClickTask={rightClickTask} {...props}/>
             )}
         </ul>
         {showTaskModal && <TaskContextModal

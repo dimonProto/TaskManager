@@ -1,15 +1,17 @@
-import React from 'react';
+import React, {useRef} from 'react';
 
-const Task = ({color, section, idx, task,startHandler,dropHandler,endHandler,rightClickTask, style}) => {
+const Task = ({color, section, idx, task,startHandler,dropHandler,endHandler,rightClickTask}) => {
+    const currentTask = useRef()
     if(!task) return
+
 
     return (
         <li className="task"
-            style={style}
+            ref={currentTask}
             draggable
-            onDragStart={(e) => startHandler(e, task, section.id, idx)}
+            onDragStart={(e) => startHandler(e, task, section.id, idx, currentTask.current)}
             onDrag={(e) => dropHandler(e, task)}
-            onDragEnd={endHandler}
+            onDragEnd={e => endHandler(e, currentTask.current)}
             color={color}
             onContextMenu={(e) => rightClickTask(e, task.id, task.name)} key={task.id}>
             { task.name}
