@@ -23,27 +23,14 @@ function App() {
         phantomRef.current.style.top = top.toString() + 'px'
     }
 
-    const setTaskTransfer = (e, targetElement) => {
-        const positionX = e.target.getBoundingClientRect().left
-        const positionY = e.target.getBoundingClientRect().top
-        if(e.dataTransfer.setDragImage){
-            const clone = targetElement.cloneNode(true)
-            clone.style.left ='-9000px'
-            clone.style.position ='absolute'
-            const cloneLi =  document.body.appendChild(clone)
-            e.dataTransfer.setDragImage(clone,e.pageX - positionX  ,e.pageY - positionY)
-
-            setTimeout(() => {
-                targetElement.style.visibility='hidden'
-                document.body.removeChild(cloneLi)
-            },10)
-        }
-    }
 
     const startHandler = (e, task, sectionId, idx) => {
         const targetElement = e.target
 
-        setTaskTransfer(e, targetElement)
+        setTimeout(() => {
+            targetElement.style.visibility='hidden'
+        },10)
+
         setOldTaskPosition(idx)
         setOldSectionId(sectionId)
         setPositionPhantom(targetElement.getBoundingClientRect().left, targetElement.getBoundingClientRect().top)
