@@ -24,11 +24,10 @@ function App() {
     }
 
     const setTaskTransfer = (e, targetElement) => {
+        const positionX = e.target.getBoundingClientRect().left
+        const positionY = e.target.getBoundingClientRect().top
         if(e.dataTransfer.setDragImage){
             const clone = targetElement.cloneNode(true)
-            const positionX = e.target.getBoundingClientRect().left
-            const positionY = e.target.getBoundingClientRect().top
-
             clone.style.left ='-9000px'
             clone.style.position ='absolute'
             const cloneLi =  document.body.appendChild(clone)

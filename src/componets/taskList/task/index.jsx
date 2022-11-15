@@ -4,10 +4,11 @@ const Task = ({color, section, idx, task,startHandler,dropHandler,endHandler,rig
     const currentTask = useRef()
     if(!task) return
 
-
+    console.log(task)
     return (
         <li className="task"
             ref={currentTask}
+            style={section && {borderColor: `${section.color}`}}
             draggable
             onDragStart={(e) => startHandler(e, task, section.id, idx, currentTask.current)}
             onDrag={(e) => dropHandler(e, task)}
