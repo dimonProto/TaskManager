@@ -23,25 +23,31 @@ function App() {
         phantomRef.current.style.top = top.toString() + 'px'
     }
 
-    const startHandler = (e, task, sectionId, idx, targetElement) => {
-
+    const setTaskTransfer = (e, targetElement) => {
         if(e.dataTransfer.setDragImage){
             const clone = targetElement.cloneNode(true)
+            const positionX = e.target.getBoundingClientRect().left
+            const positionY = e.target.getBoundingClientRect().top
 
             clone.style.left ='-9000px'
             clone.style.position ='absolute'
-
             const cloneLi =  document.body.appendChild(clone)
-            e.dataTransfer.setDragImage(clone,0,0)
+            e.dataTransfer.setDragImage(clone,e.pageX - positionX  ,e.pageY - positionY)
 
             setTimeout(() => {
                 targetElement.style.visibility='hidden'
                 document.body.removeChild(cloneLi)
             },10)
         }
+    }
+
+    const startHandler = (e, task, sectionId, idx) => {
+        const targetElement = e.target
+
+        setTaskTransfer(e, targetElement)
         setOldTaskPosition(idx)
         setOldSectionId(sectionId)
-        setPositionPhantom(e.target.getBoundingClientRect().left, e.target.getBoundingClientRect().top)
+        setPositionPhantom(targetElement.getBoundingClientRect().left, targetElement.getBoundingClientRect().top)
         setPhantomTask(task)
     }
 
@@ -54,12 +60,12 @@ function App() {
         return Math.floor((e.pageY - sectionTop) / HEIGHT_TASK)
     }
 
-    const endHandler = (e, targetElement) => {
+    const endHandler = (e) => {
         e.preventDefault()
         const idxSection = Math.floor(e.pageX / SIZE_SECTION)
         const sectionId = sectionsBlocks[idxSection].id
         setPhantomTask(null)
-        targetElement.style.visibility='visible'
+        e.target.style.visibility='visible'
 
         const task = {
             oldPosition: oldTaskPosition,
