@@ -12,6 +12,7 @@ const TaskList = ({
       taskId,
       taskName,
       setTaskName,
+      handleTaskPosition,
       ...props
 }) => {
 
@@ -19,7 +20,11 @@ const TaskList = ({
         <>
         <ul className="list--tasks">
             { section.tasks.map((task, idx) =>
-                <Task key={task.id + idx} task={task} section={section} idx={idx} rightClickTask={rightClickTask} {...props}/>
+                <Task key={task.id + idx}
+                      task={task} section={section}
+                      idx={idx} rightClickTask={rightClickTask}
+                      handleTaskPosition={(pos) => {handleTaskPosition(section.id, task.id, pos)}}
+                      {...props}/>
             )}
         </ul>
         {showTaskModal && <TaskContextModal

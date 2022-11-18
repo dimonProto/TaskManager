@@ -5,16 +5,17 @@ import ModalWrapper from "../index";
 import {COLORS} from "../../../utils/constant";
 import {useDispatch} from "react-redux";
 import {changeColorSection, deleteSection} from "../../../redux/slices/sectionSlice";
+import {useAction} from "../../../hooks/useAction";
 
 const SectionContextModal = ({addTask,sectionId,sectionName,changeName, color:sectionColor, ...props}) => {
-    const dispatch = useDispatch()
+    const {changeColorSection, deleteSection} = useAction()
 
     const handleColor = (color) => {
-        dispatch(changeColorSection({sectionId:sectionId, sectionColor: color}))
+        changeColorSection({sectionId:sectionId, sectionColor: color})
     }
 
     const handleDeleteSection = () => {
-        dispatch(deleteSection(sectionId))
+        deleteSection(sectionId)
     }
 
     return (

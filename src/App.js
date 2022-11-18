@@ -1,16 +1,17 @@
 import './App.css';
-import {useDispatch, useSelector} from 'react-redux'
-import {addSection, changeSectionName, createTask, moveTask} from './redux/slices/sectionSlice'
+import { useSelector} from 'react-redux'
 import Section from "./componets/section";
 import CreateSection from "./componets/addSection";
 import Header from "./componets/header";
 import {useRef, useState} from "react";
 import {HEIGHT_TASK, SIZE_SECTION} from "./utils/constant";
 import Task from "./componets/taskList/task";
+import {useAction} from "./hooks/useAction";
+import {uid} from "uid";
 
 function App() {
     const sectionsBlocks = useSelector((state) => state.section.sections );
-    const dispatch = useDispatch();
+    const {moveTask, addSection, setTaskPosition, createTask, changeSectionName} = useAction()
     const [oldSectionId, setOldSectionId] = useState(null)
     const [oldTaskPosition, setOldTaskPosition] = useState(null)
     const [phantomTask, setPhantomTask] = useState(null)
@@ -23,7 +24,7 @@ function App() {
         phantomRef.current.style.top = top.toString() + 'px'
     }
 
-
+    console.log(sectionsBlocks)
     const startHandler = (e, task, sectionId, idx) => {
         const targetElement = e.target
 
@@ -37,9 +38,12 @@ function App() {
         setPhantomTask(task)
     }
 
-    const dropHandler = (e) => {
+    const dragHandler = (e) => {
         e.preventDefault()
-        e.dataTransfer.clearData();
+        const idxSection = Math.floor(e.pageX / SIZE_SECTION)
+        const taskOrder = currentPositionTask(e)
+        if(taskOrder < 0) return
+        setPositionPhantom(e.pageX,e.pageY)
     }
     const currentPositionTask = (e) => {
         const sectionTop = sectionsRef && sectionsRef.current.getBoundingClientRect().top
@@ -58,13 +62,22 @@ function App() {
             newPosition: currentPositionTask(e),
         }
 
-        dispatch(moveTask({
+        moveTask({
             newSectionId: sectionId,
             oldSectionId: oldSectionId,
             task
-        }))
-
+        })
     }
+
+    const handleTaskPosition = (sectionId, taskId, taskElement) => {
+         setTaskPosition({
+             sectionId,
+             taskId,
+             x: taskElement.getBoundingClientRect().left,
+             y: taskElement.getBoundingClientRect().top
+         })
+    }
+
   return (
     <div className="App">
           <Header/>
@@ -76,16 +89,22 @@ function App() {
                 { sectionsBlocks.map((el) => {
                     return <Section
                         startHandler={startHandler}
-                        dropHandler={dropHandler}
+                        dragHandler={dragHandler}
                         endHandler={endHandler}
+                        handleTaskPosition={handleTaskPosition}
                         key={el.id}
-                        addTask={() => dispatch(createTask( {sectionId:el.id}))}
+                        addTask={() => createTask( {sectionId:el.id}) }
                         section={el}
-                        changeName={(newName) => dispatch(changeSectionName({sectionId:el.id, newName}))}
+                        changeName={(newName) => changeSectionName({sectionId:el.id, newName})}
                     />
                 })}
                 <CreateSection
-                    addSection={() => dispatch(addSection())}
+                    addSection={() => addSection({
+                        id: uid(),
+                        tasks: [],
+                        name: 'New Section',
+                        color: '#cbcbcb',
+                    })}
                 />
             </div>
           </main>

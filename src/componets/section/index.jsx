@@ -1,11 +1,11 @@
 import React, { useState} from 'react';
 import {ReactComponent as Plus} from "../../images/icons/plus.svg";
 import SectionContextModal from "../modal/sectionModal";
-import {createTask} from "../../redux/slices/sectionSlice";
-import {useDispatch} from 'react-redux'
 import TaskList from "../taskList";
+import {useAction} from "../../hooks/useAction";
 
 const Section = ({addTask, section, changeName,newPositionTask, ...props}) => {
+    const {createTask} = useAction()
     const [showSectionModal, setSectionModal] = useState(false)
     const [showTaskModal, setTaskModal] = useState(false)
     const [cursorPosition, setCursorPosition] = useState({
@@ -14,7 +14,6 @@ const Section = ({addTask, section, changeName,newPositionTask, ...props}) => {
     })
     const [taskId, setTaskId] = useState('')
     const [taskName, setTaskName] = useState('')
-    const dispatch = useDispatch();
 
     const handleModal = (e,taskId) => {
         e.preventDefault();
@@ -38,7 +37,7 @@ const Section = ({addTask, section, changeName,newPositionTask, ...props}) => {
     const toggleTaskModal = () =>  setTaskModal(!showTaskModal)
 
     const handleAddTask = () => {
-        dispatch(createTask( {sectionId:section.id}))
+        createTask( {sectionId:section.id})
         toggleSectionModal()
     }
 
