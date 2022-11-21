@@ -24,7 +24,6 @@ function App() {
         phantomRef.current.style.top = top.toString() + 'px'
     }
 
-    console.log(sectionsBlocks)
     const startHandler = (e, task, sectionId, idx) => {
         const targetElement = e.target
 
@@ -43,7 +42,9 @@ function App() {
         const idxSection = Math.floor(e.pageX / SIZE_SECTION)
         const taskOrder = currentPositionTask(e)
         if(taskOrder < 0) return
-        setPositionPhantom(e.pageX,e.pageY)
+        let task = sectionsBlocks[idxSection].tasks[taskOrder]
+        if(!idxSection) return;
+        setPositionPhantom(task.x,task.y)
     }
     const currentPositionTask = (e) => {
         const sectionTop = sectionsRef && sectionsRef.current.getBoundingClientRect().top
