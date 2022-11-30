@@ -43,7 +43,7 @@ function App() {
         const taskOrder = currentPositionTask(e)
         if(taskOrder < 0) return
         let task = sectionsBlocks[idxSection].tasks[taskOrder]
-        if(!idxSection) return;
+        if(!task) return
         setPositionPhantom(task.x,task.y)
     }
     const currentPositionTask = (e) => {
