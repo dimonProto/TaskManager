@@ -42,7 +42,7 @@ function App() {
         const idxSection = Math.floor(e.pageX / SIZE_SECTION)
         const taskOrder = currentPositionTask(e)
         if(taskOrder < 0) return
-        let task = sectionsBlocks[idxSection].tasks[taskOrder]
+        let task = sectionsBlocks[idxSection]?.tasks[taskOrder]
         if(!task) return
         setPositionPhantom(task.x,task.y)
     }
