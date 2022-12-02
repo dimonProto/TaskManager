@@ -4,10 +4,10 @@ import Section from "./componets/section";
 import CreateSection from "./componets/addSection";
 import Header from "./componets/header";
 import {useRef, useState} from "react";
-import {HEIGHT_TASK, SIZE_SECTION} from "./utils/constant";
 import Task from "./componets/taskList/task";
 import {useAction} from "./hooks/useAction";
 import {uid} from "uid";
+import {HEIGHT_TASK, SECTION_GAP, WIDTH_SECTION} from "./utils/constant";
 
 function App() {
     const sectionsBlocks = useSelector((state) => state.section.sections );
@@ -34,17 +34,37 @@ function App() {
         setOldTaskPosition(idx)
         setOldSectionId(sectionId)
         setPositionPhantom(targetElement.getBoundingClientRect().left, targetElement.getBoundingClientRect().top)
-        setPhantomTask(task)
+        setPhantomTask({task, isGoAway: false})
     }
 
     const dragHandler = (e) => {
         e.preventDefault()
-        const idxSection = Math.floor(e.pageX / SIZE_SECTION)
+        const idxSection = Math.floor(e.pageX / WIDTH_SECTION)
         const taskOrder = currentPositionTask(e)
+        const taskList = sectionsBlocks[idxSection]?.tasks
         if(taskOrder < 0) return
-        let task = sectionsBlocks[idxSection]?.tasks[taskOrder]
-        if(!task) return
-        setPositionPhantom(task.x,task.y)
+        let hoveredTask = taskList[taskOrder - 1]
+
+        if(sectionsBlocks[idxSection].id === oldSectionId){
+            setPhantomTask({...phantomTask, isGoAway: true})
+        } else {
+            setPhantomTask({...phantomTask, isGoAway: false})
+        }
+        if(hoveredTask){
+            setPositionPhantom(hoveredTask.x,hoveredTask.y)
+        }
+        if(!hoveredTask && taskList.length > 0) {
+            const lastTask = taskList[taskList.length - 1]
+            if(phantomTask.id === lastTask.id && !phantomTask.isGoAway) return;
+            const phantomPositionY = phantomTask.isGoAway ? lastTask.y : lastTask.y + HEIGHT_TASK
+             setPositionPhantom(lastTask.x, phantomPositionY)
+        }
+        if(!hoveredTask && taskList.length === 0){
+            const zeroY = sectionsBlocks.find((section) => section.tasks.length > 0).tasks[0].y;
+            const zeroX = WIDTH_SECTION * idxSection + SECTION_GAP * 2
+            setPositionPhantom(zeroX, zeroY)
+        }
+
     }
     const currentPositionTask = (e) => {
         const sectionTop = sectionsRef && sectionsRef.current.getBoundingClientRect().top
@@ -53,8 +73,8 @@ function App() {
 
     const endHandler = (e) => {
         e.preventDefault()
-        const idxSection = Math.floor(e.pageX / SIZE_SECTION)
-        const sectionId = sectionsBlocks[idxSection].id
+        const idxSection = Math.floor(e.pageX / WIDTH_SECTION)
+        const sectionId = sectionsBlocks[idxSection]?.id
         setPhantomTask(null)
         e.target.style.visibility='visible'
 
@@ -78,12 +98,11 @@ function App() {
              y: taskElement.getBoundingClientRect().top
          })
     }
-
   return (
     <div className="App">
           <Header/>
           <span ref={phantomRef} className='phantom' >
-               <Task task={phantomTask} />
+               <Task task={phantomTask && phantomTask.task} />
           </span>
           <main>
             <div className="main--section"  ref={sectionsRef}>

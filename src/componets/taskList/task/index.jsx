@@ -2,12 +2,10 @@ import React, {useEffect, useRef} from 'react';
 
 const Task = ({color, section, idx, task,startHandler,dragHandler,endHandler,handleTaskPosition,rightClickTask}) => {
     const currentTask = useRef()
-
     useEffect(() =>{
         if(!currentTask || !currentTask.current) return
         handleTaskPosition( currentTask.current)
     },[currentTask])
-
     if(!task) return
 
     return (
