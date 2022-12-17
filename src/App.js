@@ -73,8 +73,9 @@ function App() {
 		}
 
 		if (!hoveredTask && taskList.length === 0) {
-			const zeroY = sectionsBlocks.find((section) => section.tasks.length > 0)
-				.tasks[0].y;
+			const zeroY = sectionsBlocks.find(
+				(section) => section.tasks.length > 0
+			).tasks[0].y;
 			const zeroX = WIDTH_SECTION * idxSection + SECTION_GAP * 2;
 			setPositionPhantom(zeroX, zeroY);
 		}
@@ -132,7 +133,10 @@ function App() {
 								addTask={() => createTask({ sectionId: el.id })}
 								section={el}
 								changeName={(newName) =>
-									changeSectionName({ sectionId: el.id, newName })
+									changeSectionName({
+										sectionId: el.id,
+										newName
+									})
 								}
 							/>
 						);
