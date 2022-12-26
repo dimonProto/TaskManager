@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import TaskInNewWindow from '../../TaskInNewWindow';
+import React, { useEffect, useRef } from 'react';
+import { useAction } from '../../../hooks/useAction';
 
 const Task = ({
 	color,
@@ -12,8 +12,9 @@ const Task = ({
 	handleTaskPosition,
 	rightClickTask
 }) => {
-	const [openWindow, setOpenWindow] = useState(false);
 	const currentTask = useRef();
+
+	const { setCurrentTask } = useAction();
 
 	useEffect(() => {
 		if (!currentTask || !currentTask.current) return;
@@ -27,7 +28,7 @@ const Task = ({
 				className="task"
 				ref={currentTask}
 				style={section && { borderColor: `${section.color}` }}
-				onClick={() => setOpenWindow(true)}
+				onClick={() => setCurrentTask(task)}
 				draggable
 				onDragStart={(e) =>
 					startHandler(e, task, section.id, idx, currentTask.current)
@@ -40,7 +41,6 @@ const Task = ({
 			>
 				{task.name}
 			</li>
-			{openWindow && <TaskInNewWindow>{task.id}</TaskInNewWindow>}
 		</>
 	);
 };

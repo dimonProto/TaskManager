@@ -8,15 +8,18 @@ import Task from './componets/taskList/task';
 import { useAction } from './hooks/useAction';
 import { uid } from 'uid';
 import { HEIGHT_TASK, SECTION_GAP, WIDTH_SECTION } from './utils/constant';
+import TaskInNewWindow from './componets/TaskInNewWindow';
 
 function App() {
 	const sectionsBlocks = useSelector((state) => state.section.sections);
+	const clickTask = useSelector((state) => state.section.currentTask);
 	const {
 		moveTask,
 		addSection,
 		setTaskPosition,
 		createTask,
-		changeSectionName
+		changeSectionName,
+		setCurrentTask
 	} = useAction();
 	const [oldSectionId, setOldSectionId] = useState(null);
 	const [oldTaskPosition, setOldTaskPosition] = useState(null);
@@ -114,6 +117,8 @@ function App() {
 			y: taskElement.getBoundingClientRect().top
 		});
 	};
+
+	console.log(clickTask, 'clickTask');
 	return (
 		<div className="App">
 			<Header />
@@ -153,6 +158,11 @@ function App() {
 					/>
 				</div>
 			</main>
+			{clickTask && (
+				<TaskInNewWindow onClear={() => setCurrentTask(null)}>
+					{clickTask.id}
+				</TaskInNewWindow>
+			)}
 		</div>
 	);
 }
