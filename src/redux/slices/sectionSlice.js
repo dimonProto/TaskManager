@@ -4,7 +4,7 @@ import '../../utils/helpers/index';
 
 const initialState = {
 	sections: [],
-	currentTask: null
+	activeTask: null
 };
 
 export const sectionSlice = createSlice({
@@ -81,8 +81,8 @@ export const sectionSlice = createSlice({
 				}
 			});
 		},
-		setCurrentTask: (state, action) => {
-			state.currentTask = action.payload;
+		setActiveTask: (state, action) => {
+			state.activeTask = action.payload;
 		}
 	}
 });

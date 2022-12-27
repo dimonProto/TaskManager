@@ -8,18 +8,18 @@ import Task from './componets/taskList/task';
 import { useAction } from './hooks/useAction';
 import { uid } from 'uid';
 import { HEIGHT_TASK, SECTION_GAP, WIDTH_SECTION } from './utils/constant';
-import TaskInNewWindow from './componets/TaskInNewWindow';
+import TaskWindow from './componets/TaskWindow';
 
 function App() {
 	const sectionsBlocks = useSelector((state) => state.section.sections);
-	const clickTask = useSelector((state) => state.section.currentTask);
+	const activeTask = useSelector((state) => state.section.activeTask);
 	const {
 		moveTask,
 		addSection,
 		setTaskPosition,
 		createTask,
 		changeSectionName,
-		setCurrentTask
+		setActiveTask
 	} = useAction();
 	const [oldSectionId, setOldSectionId] = useState(null);
 	const [oldTaskPosition, setOldTaskPosition] = useState(null);
@@ -51,6 +51,7 @@ function App() {
 
 	const dragHandler = (e) => {
 		e.preventDefault();
+
 		const idxSection = Math.floor(e.pageX / WIDTH_SECTION);
 		const taskOrder = currentPositionTask(e);
 		const taskList = sectionsBlocks[idxSection]?.tasks;
@@ -118,7 +119,6 @@ function App() {
 		});
 	};
 
-	console.log(clickTask, 'clickTask');
 	return (
 		<div className="App">
 			<Header />
@@ -158,10 +158,13 @@ function App() {
 					/>
 				</div>
 			</main>
-			{clickTask && (
-				<TaskInNewWindow onClear={() => setCurrentTask(null)}>
-					{clickTask.id}
-				</TaskInNewWindow>
+			{activeTask && (
+				<TaskWindow
+					id={activeTask.id}
+					onClear={() => setActiveTask(null)}
+				>
+					{activeTask.id}
+				</TaskWindow>
 			)}
 		</div>
 	);

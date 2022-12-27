@@ -12,29 +12,35 @@ const Task = ({
 	handleTaskPosition,
 	rightClickTask
 }) => {
-	const currentTask = useRef();
+	const currentTaskRef = useRef();
 
-	const { setCurrentTask } = useAction();
+	const { setActiveTask } = useAction();
 
 	useEffect(() => {
-		if (!currentTask || !currentTask.current) return;
-		handleTaskPosition(currentTask.current);
-	}, [currentTask]);
+		if (!currentTaskRef || !currentTaskRef.current) return;
+		handleTaskPosition(currentTaskRef.current);
+	}, [currentTaskRef]);
 	if (!task) return;
 
 	return (
 		<>
 			<li
 				className="task"
-				ref={currentTask}
+				ref={currentTaskRef}
 				style={section && { borderColor: `${section.color}` }}
-				onClick={() => setCurrentTask(task)}
+				onClick={() => setActiveTask(task)}
 				draggable
 				onDragStart={(e) =>
-					startHandler(e, task, section.id, idx, currentTask.current)
+					startHandler(
+						e,
+						task,
+						section.id,
+						idx,
+						currentTaskRef.current
+					)
 				}
 				onDrag={(e) => dragHandler(e)}
-				onDragEnd={(e) => endHandler(e, currentTask.current)}
+				onDragEnd={(e) => endHandler(e, currentTaskRef.current)}
 				color={color}
 				onContextMenu={(e) => rightClickTask(e, task.id, task.name)}
 				key={task.id}
