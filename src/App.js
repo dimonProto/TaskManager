@@ -18,7 +18,7 @@ function App() {
 		addSection,
 		setTaskPosition,
 		createTask,
-		changeSectionName,
+		changeSectionProperty,
 		setActiveTask
 	} = useAction();
 	const [oldSectionId, setOldSectionId] = useState(null);
@@ -138,9 +138,10 @@ function App() {
 								addTask={() => createTask({ sectionId: el.id })}
 								section={el}
 								changeName={(newName) =>
-									changeSectionName({
+									changeSectionProperty({
 										sectionId: el.id,
-										newName
+										property: 'name',
+										value: newName
 									})
 								}
 							/>

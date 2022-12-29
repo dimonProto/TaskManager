@@ -13,10 +13,14 @@ const SectionContextModal = ({
 	color: sectionColor,
 	...props
 }) => {
-	const { changeColorSection, deleteSection } = useAction();
+	const { changeSectionProperty, deleteSection } = useAction();
 
 	const handleColor = (color) => {
-		changeColorSection({ sectionId: sectionId, sectionColor: color });
+		changeSectionProperty({
+			sectionId: sectionId,
+			property: 'color',
+			value: color
+		});
 	};
 
 	const handleDeleteSection = () => {

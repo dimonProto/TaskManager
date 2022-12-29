@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { uid } from 'uid';
 import '../../utils/helpers/index';
+import { uid } from 'uid';
+import { withSection } from '../utils';
 
 const initialState = {
 	sections: [],
@@ -15,12 +16,11 @@ export const sectionSlice = createSlice({
 			state.sections.push(action.payload);
 		},
 		createTask: (state, action) => {
-			const targetSection = state.sections.findById(
-				action.payload.sectionId
-			);
-			targetSection.tasks.push({
-				id: uid(),
-				name: 'New task'
+			return withSection(state, action, (section) => {
+				section.tasks.push({
+					id: uid(),
+					name: 'New task'
+				});
 			});
 		},
 		moveTask: (state, { payload }) => {
@@ -32,55 +32,38 @@ export const sectionSlice = createSlice({
 			const cut = oldSection.tasks.splice(task.oldPosition, 1)[0];
 			newSection.tasks.splice(task.newPosition, 0, cut);
 		},
-		changeSectionName: (state, action) => {
-			const targetSection = state.sections.find(
-				(el) => el.id === action.payload.sectionId
-			);
-			targetSection.name = action.payload.newName;
-		},
-		changeTaskName: (state, action) => {
-			const findSection = state.sections.findById(
-				action.payload.sectionId
-			);
 
-			findSection.tasks.map((task) => {
-				if (task.id === action.payload.taskId) {
-					task.name = action.payload.taskName;
-				}
+		changeTaskName: (state, action) => {
+			return withSection(state, action, (section) => {
+				section.tasks.findById(action.payload.taskId).name =
+					action.payload.taskName;
 			});
 		},
-		changeColorSection: (state, action) => {
-			state.sections.map((el) => {
-				if (el.id === action.payload.sectionId) {
-					el.color = action.payload.sectionColor;
-				}
+		changeSectionProperty: (state, action) => {
+			return withSection(state, action, (section) => {
+				section[action.payload.property] = action.payload.value;
 			});
 		},
 		deleteSection: (state, action) => {
-			state.sections = state.sections.filter(
-				(section) => section.id !== action.payload
-			);
+			state.sections = state.sections.removeById(action.payload);
 		},
 		deleteTask: (state, action) => {
-			const findSection = state.sections.findById(
-				action.payload.sectionId
-			);
-
-			findSection.tasks = findSection.tasks.filter(
-				(task) => task.id !== action.payload.taskId
-			);
-		},
-		setTaskPosition: (state, action) => {
-			const findSection = state.sections.findById(
-				action.payload.sectionId
-			);
-			findSection.tasks.map((el) => {
-				if (el.id === action.payload.taskId) {
-					el.x = action.payload.x;
-					el.y = action.payload.y;
-				}
+			return withSection(state, action, (section) => {
+				section.tasks = section.tasks.removeById(action.payload.taskId);
 			});
 		},
+
+		setTaskPosition: (state, action) => {
+			return withSection(state, action, (section) => {
+				section.tasks.map((el) => {
+					if (el.id === action.payload.taskId) {
+						el.x = action.payload.x;
+						el.y = action.payload.y;
+					}
+				});
+			});
+		},
+
 		setActiveTask: (state, action) => {
 			state.activeTask = action.payload;
 		}
