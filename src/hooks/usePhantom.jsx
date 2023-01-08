@@ -9,8 +9,6 @@ export const usePhantom = () => {
 
 	const setPositionPhantom = (left, top) => {
 		if (!phantomRef) return null;
-		// phantomRef.current.style.left = left.toString() + 'px';
-		// phantomRef.current.style.top = top.toString() + 'px';
 		phantomRef.current.style.left = left + 'px';
 		phantomRef.current.style.top = top + 'px';
 	};
