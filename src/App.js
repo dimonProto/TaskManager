@@ -4,34 +4,31 @@ import Section from './componets/section';
 import CreateSection from './componets/addSection';
 import Header from './componets/header';
 import { useRef, useState } from 'react';
-import Task from './componets/taskList/task';
 import { useAction } from './hooks/useAction';
 import { uid } from 'uid';
-import { HEIGHT_TASK, SECTION_GAP, WIDTH_SECTION } from './utils/constant';
+import { HEIGHT_TASK, WIDTH_SECTION } from './utils/constant';
 import TaskWindow from './componets/TaskWindow';
+import { usePhantom } from './hooks/usePhantom';
 
 function App() {
 	const sectionsBlocks = useSelector((state) => state.section.sections);
 	const activeTask = useSelector((state) => state.section.activeTask);
+	const startYPos = useSelector((state) => state.section.startYPosition);
+
 	const {
 		moveTask,
 		addSection,
-		setTaskPosition,
+		changeTaskProperties,
 		createTask,
 		changeSectionProperty,
 		setActiveTask
 	} = useAction();
+
+	const { PhantomJSX, handlePhantomPosition, clearPhantom, initPhantom } =
+		usePhantom();
 	const [oldSectionId, setOldSectionId] = useState(null);
 	const [oldTaskPosition, setOldTaskPosition] = useState(null);
-	const [phantomTask, setPhantomTask] = useState(null);
 	const sectionsRef = useRef();
-	const phantomRef = useRef();
-
-	const setPositionPhantom = (left, top) => {
-		if (!phantomRef) return null;
-		phantomRef.current.style.left = left.toString() + 'px';
-		phantomRef.current.style.top = top.toString() + 'px';
-	};
 
 	const startHandler = (e, task, sectionId, idx) => {
 		const targetElement = e.target;
@@ -42,11 +39,10 @@ function App() {
 
 		setOldTaskPosition(idx);
 		setOldSectionId(sectionId);
-		setPositionPhantom(
-			targetElement.getBoundingClientRect().left,
-			targetElement.getBoundingClientRect().top
-		);
-		setPhantomTask({ task, isGoAway: false });
+		initPhantom(task, {
+			x: targetElement.getBoundingClientRect().left,
+			y: targetElement.getBoundingClientRect().top
+		});
 	};
 
 	const dragHandler = (e) => {
@@ -56,33 +52,15 @@ function App() {
 		const taskOrder = currentPositionTask(e);
 		const taskList = sectionsBlocks[idxSection]?.tasks;
 		if (taskOrder <= 0) return;
-		let hoveredTask = taskList[taskOrder - 1];
-		setPhantomTask({
-			...phantomTask,
-			isGoAway: sectionsBlocks[idxSection].id === oldSectionId
-		});
 
-		if (hoveredTask) {
-			setPositionPhantom(hoveredTask.x, hoveredTask.y);
-		}
-
-		if (!hoveredTask && taskList.length > 0) {
-			const lastTask = taskList[taskList.length - 1];
-			if (phantomTask.id === lastTask.id && !phantomTask.isGoAway) return;
-
-			const phantomPositionY = phantomTask.isGoAway
-				? lastTask.y
-				: lastTask.y + HEIGHT_TASK;
-			setPositionPhantom(lastTask.x, phantomPositionY);
-		}
-
-		if (!hoveredTask && taskList.length === 0) {
-			const zeroY = sectionsBlocks.find(
-				(section) => section.tasks.length > 0
-			).tasks[0].y;
-			const zeroX = WIDTH_SECTION * idxSection + SECTION_GAP * 2;
-			setPositionPhantom(zeroX, zeroY);
-		}
+		handlePhantomPosition(
+			taskList[taskOrder - 1],
+			taskList.length === 0,
+			startYPos,
+			taskList[taskList.length - 1] || null,
+			idxSection,
+			sectionsBlocks[idxSection].id === oldSectionId
+		);
 	};
 
 	const currentPositionTask = (e) => {
@@ -95,7 +73,7 @@ function App() {
 		e.preventDefault();
 		const idxSection = Math.floor(e.pageX / WIDTH_SECTION);
 		const sectionId = sectionsBlocks[idxSection]?.id;
-		setPhantomTask(null);
+		clearPhantom();
 		e.target.style.visibility = 'visible';
 
 		const task = {
@@ -111,20 +89,38 @@ function App() {
 	};
 
 	const handleTaskPosition = (sectionId, taskId, taskElement) => {
-		setTaskPosition({
+		changeTaskProperties({
 			sectionId,
 			taskId,
-			x: taskElement.getBoundingClientRect().left,
-			y: taskElement.getBoundingClientRect().top
+			property: ['x', 'y'],
+			value: [
+				taskElement.getBoundingClientRect().left,
+				taskElement.getBoundingClientRect().top
+			]
+		});
+	};
+
+	const handleAddTask = () => {
+		addSection({
+			id: uid(),
+			tasks: [],
+			name: 'New Section',
+			color: '#cbcbcb'
+		});
+	};
+
+	const handleChangeSectionName = (sectionId, newName) => {
+		changeSectionProperty({
+			sectionId,
+			property: 'name',
+			value: newName
 		});
 	};
 
 	return (
 		<div className="App">
 			<Header />
-			<span ref={phantomRef} className="phantom">
-				<Task task={phantomTask && phantomTask.task} />
-			</span>
+			<PhantomJSX />
 			<main>
 				<div className="main--section" ref={sectionsRef}>
 					{sectionsBlocks.map((el) => {
@@ -138,25 +134,12 @@ function App() {
 								addTask={() => createTask({ sectionId: el.id })}
 								section={el}
 								changeName={(newName) =>
-									changeSectionProperty({
-										sectionId: el.id,
-										property: 'name',
-										value: newName
-									})
+									handleChangeSectionName(el.id, newName)
 								}
 							/>
 						);
 					})}
-					<CreateSection
-						addSection={() =>
-							addSection({
-								id: uid(),
-								tasks: [],
-								name: 'New Section',
-								color: '#cbcbcb'
-							})
-						}
-					/>
+					<CreateSection addSection={handleAddTask} />
 				</div>
 			</main>
 			{activeTask && (

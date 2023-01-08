@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import '../../utils/helpers/index';
 import { uid } from 'uid';
-import { withSection } from '../utils';
+import { withSection, withTask } from '../utils';
 
 const initialState = {
 	sections: [],
-	activeTask: null
+	activeTask: null,
+	startYPosition: 0
 };
 
 export const sectionSlice = createSlice({
@@ -33,12 +34,6 @@ export const sectionSlice = createSlice({
 			newSection.tasks.splice(task.newPosition, 0, cut);
 		},
 
-		changeTaskName: (state, action) => {
-			return withSection(state, action, (section) => {
-				section.tasks.findById(action.payload.taskId).name =
-					action.payload.taskName;
-			});
-		},
 		changeSectionProperty: (state, action) => {
 			return withSection(state, action, (section) => {
 				section[action.payload.property] = action.payload.value;
@@ -54,13 +49,31 @@ export const sectionSlice = createSlice({
 		},
 
 		setTaskPosition: (state, action) => {
-			return withSection(state, action, (section) => {
-				section.tasks.map((el) => {
-					if (el.id === action.payload.taskId) {
-						el.x = action.payload.x;
-						el.y = action.payload.y;
-					}
-				});
+			return withTask(state, action, (task) => {
+				task.x = action.payload.x;
+				task.y = action.payload.y;
+			});
+		},
+		changeTaskProperty: (state, action) => {
+			return withTask(state, action, (task) => {
+				const { value, property } = action.payload;
+				task[property] = value;
+			});
+		},
+		setStartPositionYTask: (state) => {
+			if (!state.startYPosition) {
+				state.startYPosition = state.sections.find(
+					(section) => section.tasks.length > 0
+				).tasks[0]?.y;
+			}
+		},
+		changeTaskProperties: (state, action) => {
+			return withTask(state, action, (task) => {
+				sectionSlice.caseReducers.setStartPositionYTask(state);
+				const { value, property } = action.payload;
+				for (let i = 0; i < property.length; i++) {
+					task[property[i]] = value[i];
+				}
 			});
 		},
 
