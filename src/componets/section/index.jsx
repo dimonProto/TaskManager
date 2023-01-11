@@ -3,6 +3,9 @@ import { ReactComponent as Plus } from '../../images/icons/plus.svg';
 import SectionContextModal from '../modal/sectionModal';
 import TaskList from '../taskList';
 import { useAction } from '../../hooks/useAction';
+import { useToggle } from '../../hooks/useToggle';
+import { useContextMenu } from '../../hooks/useContextMenu';
+import useDebounce from '../../hooks/useDebounce';
 
 const Section = ({
 	addTask,
@@ -12,57 +15,33 @@ const Section = ({
 	...props
 }) => {
 	const { createTask } = useAction();
-	const [showSectionModal, setSectionModal] = useState(false);
-	const [showTaskModal, setTaskModal] = useState(false);
-	const [cursorPosition, setCursorPosition] = useState({
-		pageX: 0,
-		pageY: 0
-	});
+	useDebounce(section.name, 500);
+	const [isShowSectionModal, setIsShowSectionModal] = useToggle();
+	const [isShowTaskModal, setIsShowTaskModal] = useToggle();
+	const [cursorPosition, handleModal] = useContextMenu();
+
 	const [taskId, setTaskId] = useState('');
 	const [taskName, setTaskName] = useState('');
 
-	const handleModal = (e, taskId) => {
-		e.preventDefault();
-
-		if (e.nativeEvent.button === 2) {
-			setCursorPosition({
-				pageX: e.pageX,
-				pageY: e.pageY
-			});
-
-			if (taskId) {
-				toggleTaskModal(taskId);
-			} else {
-				toggleSectionModal();
-			}
-		}
-	};
-
-	const toggleSectionModal = () => setSectionModal(!showSectionModal);
-	const toggleTaskModal = () => setTaskModal(!showTaskModal);
-
 	const handleAddTask = () => {
 		createTask({ sectionId: section.id });
-		toggleSectionModal();
+		setIsShowSectionModal();
 	};
 
-	const rightClickSection = (e, taskId) => {
-		handleModal(e, taskId);
+	const rightClickSection = (e) => {
+		handleModal(e, setIsShowSectionModal);
 	};
 
 	const rightClickTask = (e, taskId, name) => {
 		e.stopPropagation();
-		rightClickSection(e, taskId);
+		handleModal(e, setIsShowTaskModal);
 		setTaskId(taskId);
 		setTaskName(name);
 	};
 
 	return (
 		<>
-			<div
-				className="section"
-				onContextMenu={(e) => rightClickSection(e)}
-			>
+			<div className="section" onContextMenu={rightClickSection}>
 				<div className="section--header">
 					<div
 						className="section--input"
@@ -83,8 +62,8 @@ const Section = ({
 				<TaskList
 					section={section}
 					rightClickTask={rightClickTask}
-					toggleTaskModal={toggleTaskModal}
-					showTaskModal={showTaskModal}
+					toggleTaskModal={setIsShowTaskModal}
+					showTaskModal={isShowTaskModal}
 					cursorPosition={cursorPosition}
 					taskId={taskId}
 					taskName={taskName}
@@ -92,9 +71,9 @@ const Section = ({
 					{...props}
 				/>
 			</div>
-			{showSectionModal && (
+			{isShowSectionModal && (
 				<SectionContextModal
-					onClick={toggleSectionModal}
+					onClick={setIsShowSectionModal}
 					cursorPosition={cursorPosition}
 					addTask={handleAddTask}
 					sectionId={section.id}

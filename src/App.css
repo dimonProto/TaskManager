@@ -205,6 +205,18 @@ main {
     cursor: pointer;
 }
 
+
+.box--item__img svg {
+    position: absolute;
+    background-color: white;
+    right: 10px;
+    fill: green;
+}
+
+.box--item:hover svg {
+    background-color: rgb(51, 0, 44);
+}
+
 .box--item:hover {
     background-color: rgb(51, 0, 44);
     color: #fff;
@@ -226,6 +238,11 @@ main {
     border-radius: 6px solid;
     font-size: .9rem;
     border-color: #d4d4d4;
+}
+
+.box--item.box--item__img input {
+    position: relative;
+    padding-right: 30px;
 }
 
 .colors {

@@ -2,6 +2,8 @@ import React from 'react';
 import ModalWrapper from '../index';
 import { ReactComponent as Delete } from '../../../images/icons/delete.svg';
 import { useAction } from '../../../hooks/useAction';
+import { ReactComponent as Check } from '../../../images/icons/check.svg';
+import useDebounce from '../../../hooks/useDebounce';
 
 const TaskContextModal = ({
 	taskId,
@@ -11,7 +13,7 @@ const TaskContextModal = ({
 	...props
 }) => {
 	const { deleteTask, changeTaskProperty } = useAction();
-
+	const debouncedValue = useDebounce(taskName, 500);
 	const handleDelete = () => {
 		deleteTask({ sectionId, taskId });
 		props.onClick();
@@ -29,8 +31,9 @@ const TaskContextModal = ({
 	return (
 		<ModalWrapper {...props}>
 			<ul className="box--list">
-				<li className="box--item">
+				<li className="box--item box--item__img">
 					<input type="text" value={taskName} onChange={changeName} />
+					{debouncedValue && <Check />}
 				</li>
 				<li className="box--item" onClick={handleDelete}>
 					<Delete />

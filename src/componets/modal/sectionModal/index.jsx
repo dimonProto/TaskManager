@@ -4,6 +4,7 @@ import { ReactComponent as Delete } from '../../../images/icons/delete.svg';
 import { ReactComponent as Plus } from '../../../images/icons/plus.svg';
 import { COLORS } from '../../../utils/constant';
 import { useAction } from '../../../hooks/useAction';
+import useDebounce from '../../../hooks/useDebounce';
 
 const SectionContextModal = ({
 	addTask,
@@ -14,6 +15,7 @@ const SectionContextModal = ({
 	...props
 }) => {
 	const { changeSectionProperty, deleteSection } = useAction();
+	useDebounce(sectionName, 500);
 
 	const handleColor = (color) => {
 		changeSectionProperty({
