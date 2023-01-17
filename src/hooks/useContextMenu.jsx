@@ -8,13 +8,11 @@ export const useContextMenu = () => {
 
 	const handleModal = (e, callback) => {
 		e.preventDefault();
-
 		if (e.nativeEvent.button === 2) {
 			setCursorPosition({
 				pageX: e.pageX,
 				pageY: e.pageY
 			});
-
 			callback();
 		}
 	};

@@ -17,9 +17,9 @@ const Section = ({
 	const { createTask } = useAction();
 	useDebounce(section.name, 500);
 	const [isShowSectionModal, setIsShowSectionModal] = useToggle();
-	const [isShowTaskModal, setIsShowTaskModal] = useToggle();
-	const [cursorPosition, handleModal] = useContextMenu();
 
+	const [cursorPosition, handleModal] = useContextMenu();
+	const [isShowTaskModal, setIsShowTaskModal] = useToggle();
 	const [taskId, setTaskId] = useState('');
 	const [taskName, setTaskName] = useState('');
 
@@ -35,6 +35,7 @@ const Section = ({
 	const rightClickTask = (e, taskId, name) => {
 		e.stopPropagation();
 		handleModal(e, setIsShowTaskModal);
+
 		setTaskId(taskId);
 		setTaskName(name);
 	};
