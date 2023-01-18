@@ -5,7 +5,7 @@ import TaskList from '../taskList';
 import { useAction } from '../../hooks/useAction';
 import { useToggle } from '../../hooks/useToggle';
 import { useContextMenu } from '../../hooks/useContextMenu';
-import useDebounce from '../../hooks/useDebounce';
+import DebounceInput from '../debounceInput';
 
 const Section = ({
 	addTask,
@@ -15,7 +15,6 @@ const Section = ({
 	...props
 }) => {
 	const { createTask } = useAction();
-	useDebounce(section.name, 500);
 	const [isShowSectionModal, setIsShowSectionModal] = useToggle();
 
 	const [cursorPosition, handleModal] = useContextMenu();
@@ -48,11 +47,15 @@ const Section = ({
 						className="section--input"
 						style={{ backgroundColor: `${section.color}` }}
 					>
-						<input
-							type="text"
-							placeholder="Section label"
+						{/*<input*/}
+						{/*	type="text"*/}
+						{/*	placeholder="Section label"*/}
+						{/*	value={section.name}*/}
+						{/*	onChange={(e) => changeName(e.target.value)}*/}
+						{/*/>*/}
+						<DebounceInput
 							value={section.name}
-							onChange={(e) => changeName(e.target.value)}
+							setValue={changeName}
 						/>
 					</div>
 					<div className="button--add" onClick={addTask}>

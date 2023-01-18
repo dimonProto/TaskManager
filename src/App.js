@@ -7,7 +7,7 @@ import { useRef, useState } from 'react';
 import { useAction } from './hooks/useAction';
 import { uid } from 'uid';
 import { HEIGHT_TASK, WIDTH_SECTION } from './utils/constant';
-import TaskWindow from './componets/TaskWindow';
+import TaskWindow from './componets/taskWindow';
 import { usePhantom } from './hooks/usePhantom';
 
 function App() {

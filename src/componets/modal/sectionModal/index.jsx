@@ -4,7 +4,7 @@ import { ReactComponent as Delete } from '../../../images/icons/delete.svg';
 import { ReactComponent as Plus } from '../../../images/icons/plus.svg';
 import { COLORS } from '../../../utils/constant';
 import { useAction } from '../../../hooks/useAction';
-import useDebounce from '../../../hooks/useDebounce';
+import DebounceInput from '../../debounceInput';
 
 const SectionContextModal = ({
 	addTask,
@@ -15,7 +15,6 @@ const SectionContextModal = ({
 	...props
 }) => {
 	const { changeSectionProperty, deleteSection } = useAction();
-	useDebounce(sectionName, 500);
 
 	const handleColor = (color) => {
 		changeSectionProperty({
@@ -37,11 +36,12 @@ const SectionContextModal = ({
 					<span className="delete--text">Add task</span>
 				</li>
 				<li className="box--item">
-					<input
-						type="text"
-						value={sectionName}
-						onChange={(event) => changeName(event.target.value)}
-					/>
+					<DebounceInput value={sectionName} setValue={changeName} />
+					{/*<input*/}
+					{/*	type="text"*/}
+					{/*	value={sectionName}*/}
+					{/*	onChange={(event) => changeName(event.target.value)}*/}
+					{/*/>*/}
 				</li>
 				<li className="box--item">
 					<ul className="colors">
