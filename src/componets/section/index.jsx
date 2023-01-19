@@ -5,7 +5,6 @@ import TaskList from '../taskList';
 import { useAction } from '../../hooks/useAction';
 import { useToggle } from '../../hooks/useToggle';
 import { useContextMenu } from '../../hooks/useContextMenu';
-import DebounceInput from '../debounceInput';
 
 const Section = ({
 	addTask,
@@ -47,15 +46,14 @@ const Section = ({
 						className="section--input"
 						style={{ backgroundColor: `${section.color}` }}
 					>
-						{/*<input*/}
-						{/*	type="text"*/}
-						{/*	placeholder="Section label"*/}
+						{/*<DebounceInput*/}
 						{/*	value={section.name}*/}
-						{/*	onChange={(e) => changeName(e.target.value)}*/}
+						{/*	onChange={changeName}*/}
 						{/*/>*/}
-						<DebounceInput
+						<input
+							type="text"
 							value={section.name}
-							setValue={changeName}
+							onChange={(event) => changeName(event.target.value)}
 						/>
 					</div>
 					<div className="button--add" onClick={addTask}>

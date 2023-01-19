@@ -36,7 +36,7 @@ const SectionContextModal = ({
 					<span className="delete--text">Add task</span>
 				</li>
 				<li className="box--item">
-					<DebounceInput value={sectionName} setValue={changeName} />
+					<DebounceInput value={sectionName} onChange={changeName} />
 					{/*<input*/}
 					{/*	type="text"*/}
 					{/*	value={sectionName}*/}

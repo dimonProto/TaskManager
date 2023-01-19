@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export const sectionSlice = createSlice({
-	name: 'counter',
+	name: 'sections',
 	initialState,
 	reducers: {
 		addSection: (state, action) => {

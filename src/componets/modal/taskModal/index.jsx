@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ModalWrapper from '../index';
 import { ReactComponent as Delete } from '../../../images/icons/delete.svg';
+import { ReactComponent as Check } from '../../../images/icons/check.svg';
 import { useAction } from '../../../hooks/useAction';
-import useDebounce from '../../../hooks/useDebounce';
+import DebounceInput from '../../debounceInput';
 
 const TaskContextModal = ({
 	taskId,
@@ -12,27 +13,32 @@ const TaskContextModal = ({
 	...props
 }) => {
 	const { deleteTask, changeTaskProperty } = useAction();
-	useDebounce(() =>
-		changeTaskProperty({
-			sectionId,
-			taskId,
-			value: taskName,
-			property: 'name'
-		})
-	);
+	const [isLoading, setIsLoading] = useState(false);
+
 	const handleDelete = () => {
 		deleteTask({ sectionId, taskId });
 		props.onClick();
 	};
-	const changeName = (e) => {
-		setTaskName(e.target.value);
+
+	const changeName = (value) => {
+		setTaskName(value);
+		changeTaskProperty({
+			sectionId,
+			taskId,
+			value,
+			property: 'name'
+		});
 	};
 	return (
 		<ModalWrapper {...props}>
 			<ul className="box--list">
 				<li className="box--item box--item__img">
-					<input type="text" value={taskName} onChange={changeName} />
-					{/*{isLoading && <Check />}*/}
+					<DebounceInput
+						value={taskName}
+						onChange={changeName}
+						setIsLoading={setIsLoading}
+					/>
+					{isLoading && <Check />}
 				</li>
 				<li className="box--item" onClick={handleDelete}>
 					<Delete />

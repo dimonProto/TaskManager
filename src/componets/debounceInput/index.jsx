@@ -1,23 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const DebounceInput = ({ value, setValue }) => {
+const DebounceInput = ({ value, onChange, setIsLoading }) => {
+	const [timeoutId, setTimeoutId] = useState(null);
+	const [debounceValue, setDebounceValue] = useState(value);
+
 	useEffect(() => {
-		const timeOut = setTimeout(() => {
-			setValue(value);
-		}, 500);
-		return () => {
-			clearTimeout(timeOut);
-		};
-	}, [value]);
+		setTimeoutId(
+			setTimeout(() => {
+				if (debounceValue !== value) {
+					onChange(debounceValue);
+				}
+			}, 500)
+		);
 
-	console.log(value);
+		return () => {
+			clearTimeout(timeoutId);
+		};
+	}, [value, debounceValue]);
 
 	return (
 		<>
 			<input
 				type="text"
-				value={value}
-				onChange={(e) => setValue(e.target.value)}
+				value={debounceValue}
+				onChange={(e) => setDebounceValue(e.target.value)}
 			/>
 		</>
 	);
