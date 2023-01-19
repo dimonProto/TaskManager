@@ -9,10 +9,7 @@ export const sectionSlice = createSlice({
 	name: 'app',
 	initialState,
 	reducers: {
-		activeModal: (state, action) => {
-			state.activeModal = action.payload;
-		},
-		disableModal: (state, action) => {
+		toggleModal: (state, action) => {
 			state.activeModal = action.payload;
 		}
 	}

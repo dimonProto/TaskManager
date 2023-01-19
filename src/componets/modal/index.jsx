@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { useAction } from '../../hooks/useAction';
 
 const ModalWrapper = ({ children, onClick, cursorPosition }) => {
-	const { activeModal, disableModal } = useAction();
+	const { toggleModal } = useAction();
 
 	useEffect(() => {
-		activeModal(true);
+		toggleModal(true);
 		return () => {
-			disableModal(false);
+			toggleModal(false);
 		};
 	}, []);
 	return (

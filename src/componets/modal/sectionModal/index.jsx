@@ -37,11 +37,6 @@ const SectionContextModal = ({
 				</li>
 				<li className="box--item">
 					<DebounceInput value={sectionName} onChange={changeName} />
-					{/*<input*/}
-					{/*	type="text"*/}
-					{/*	value={sectionName}*/}
-					{/*	onChange={(event) => changeName(event.target.value)}*/}
-					{/*/>*/}
 				</li>
 				<li className="box--item">
 					<ul className="colors">

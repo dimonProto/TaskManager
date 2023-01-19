@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-const DebounceInput = ({ value, onChange, setIsLoading }) => {
+const DebounceInput = ({ value, onChange }) => {
 	const [timeoutId, setTimeoutId] = useState(null);
 	const [debounceValue, setDebounceValue] = useState(value);
+	const [isFocusInput, setIsFocusInput] = useState(false);
+
+	useEffect(() => {
+		!isFocusInput && setDebounceValue(value);
+	}, [value]);
 
 	useEffect(() => {
 		setTimeoutId(
@@ -16,7 +21,7 @@ const DebounceInput = ({ value, onChange, setIsLoading }) => {
 		return () => {
 			clearTimeout(timeoutId);
 		};
-	}, [value, debounceValue]);
+	}, [debounceValue]);
 
 	return (
 		<>
@@ -24,6 +29,8 @@ const DebounceInput = ({ value, onChange, setIsLoading }) => {
 				type="text"
 				value={debounceValue}
 				onChange={(e) => setDebounceValue(e.target.value)}
+				onFocus={() => setIsFocusInput(true)}
+				onBlur={() => setIsFocusInput(false)}
 			/>
 		</>
 	);

@@ -124,7 +124,6 @@ function App() {
 			<main>
 				<div className="main--section" ref={sectionsRef}>
 					{sectionsBlocks.map((el) => {
-						console.log(el.name);
 						return (
 							<Section
 								startHandler={startHandler}

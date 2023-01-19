@@ -28,16 +28,16 @@ const TaskContextModal = ({
 			value,
 			property: 'name'
 		});
+		setIsLoading(true);
+		setTimeout(() => {
+			setIsLoading(false);
+		}, 1000);
 	};
 	return (
 		<ModalWrapper {...props}>
 			<ul className="box--list">
 				<li className="box--item box--item__img">
-					<DebounceInput
-						value={taskName}
-						onChange={changeName}
-						setIsLoading={setIsLoading}
-					/>
+					<DebounceInput value={taskName} onChange={changeName} />
 					{isLoading && <Check />}
 				</li>
 				<li className="box--item" onClick={handleDelete}>
