@@ -9,6 +9,7 @@ import { uid } from 'uid';
 import { HEIGHT_TASK, WIDTH_SECTION } from './utils/constant';
 import TaskWindow from './componets/taskWindow';
 import { usePhantom } from './hooks/usePhantom';
+import { ReactComponent as Carrot } from './images/icons/carrot.svg';
 
 function App() {
 	const sectionsBlocks = useSelector((state) => state.section.sections);
@@ -147,7 +148,10 @@ function App() {
 					id={activeTask.id}
 					onClear={() => setActiveTask(null)}
 				>
-					{activeTask.id}
+					<header className="draggable">
+						<Carrot className="header--img"/>
+						<p>Task manager</p>
+					</header>
 				</TaskWindow>
 			)}
 		</div>
