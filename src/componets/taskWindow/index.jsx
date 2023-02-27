@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import '../../App.css';
+import style  from "./style";
 
 const TaskWindow = ({ children, onClear, id }) => {
 	const [container, setContainer] = useState(null);
@@ -18,15 +19,8 @@ const TaskWindow = ({ children, onClear, id }) => {
 				'',
 				'width=600,height=400,left=200,top=200'
 			);
-			newWindow.current.document.write(`
-				<html>
-				<head>
-					<link rel="stylesheet" type="text/css" href="./index.css">
-				</head>
-				<body>
-			`);
 			newWindow.current.document.body.appendChild(container);
-		
+			newWindow.current.document.head.appendChild(style);
 			const current = newWindow.current;
 
 			const isWindowClosedInterval = setInterval(() => {
