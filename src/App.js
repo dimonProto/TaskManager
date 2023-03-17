@@ -10,6 +10,9 @@ import { HEIGHT_TASK, WIDTH_SECTION } from './utils/constant';
 import TaskWindow from './componets/taskWindow';
 import { usePhantom } from './hooks/usePhantom';
 import { ReactComponent as Carrot } from './images/icons/carrot.svg';
+import { ReactComponent as Agree } from './images/icons/agree.svg';
+import { ReactComponent as Delete } from './images/icons/delete.svg';
+import { ReactComponent as User } from './images/icons/user.svg';
 
 function App() {
 	const sectionsBlocks = useSelector((state) => state.section.sections);
@@ -149,9 +152,43 @@ function App() {
 					onClear={() => setActiveTask(null)}
 				>
 					<header className="draggable">
-						<Carrot className="header--img"/>
+						<Carrot className="header--img" />
 						<p>Task manager</p>
 					</header>
+					<div className="title">
+						<p>New task</p>
+						<div className="titleBtn">
+							<Agree />
+						</div>
+					</div>
+					<div className="main">
+						<label htmlFor="">Description</label>
+						<textarea name="" id="" cols="30" rows="10"></textarea>
+					</div>
+					<div className="subTask">
+						<div className="subBntMain">
+							<p>Sub Task</p>
+							<div className="subBnt">
+								<span>Add</span>
+							</div>
+						</div>
+						<ul className="subList">
+							<li>
+								<User className="subUser" />
+								<input
+									type="text"
+									placeholder="New note"
+									className="subInput"
+								/>
+								<div className="subSettings">
+									<Delete className="subDelete" />
+									<div className="titleBtn">
+										<Agree />
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
 				</TaskWindow>
 			)}
 		</div>
