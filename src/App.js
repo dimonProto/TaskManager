@@ -18,6 +18,9 @@ function App() {
 	const sectionsBlocks = useSelector((state) => state.section.sections);
 	const activeTask = useSelector((state) => state.section.activeTask);
 	const startYPos = useSelector((state) => state.section.startYPosition);
+	const [isActive, setIsActive] = useState(
+		Boolean(activeTask?.task?.completed)
+	);
 
 	const {
 		moveTask,
@@ -123,15 +126,14 @@ function App() {
 	};
 
 	const toggleTaskCompleted = (sectionId, taskId, value) => {
-		console.log(sectionId, taskId, value);
 		changeTaskProperty({
 			sectionId,
 			taskId,
 			value,
 			property: 'completed'
 		});
+		setIsActive(!isActive);
 	};
-	console.log(activeTask);
 	return (
 		<div className="App">
 			<Header />
@@ -174,7 +176,7 @@ function App() {
 								toggleTaskCompleted(
 									activeTask.sectionId,
 									activeTask.task.id,
-									!activeTask.task.completed
+									!isActive
 								)
 							}
 						>
