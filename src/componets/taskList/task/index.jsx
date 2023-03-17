@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useAction } from '../../../hooks/useAction';
+import { ReactComponent as Agree } from '../../../images/icons/agree.svg';
 
 const Task = ({
 	color,
@@ -21,14 +22,13 @@ const Task = ({
 		handleTaskPosition(currentTaskRef.current);
 	}, [currentTaskRef]);
 	if (!task) return;
-
 	return (
 		<>
 			<li
 				className="task"
 				ref={currentTaskRef}
 				style={section && { borderColor: `${section.color}` }}
-				onClick={() => setActiveTask(task)}
+				onClick={() => setActiveTask({ task, sectionId: section.id })}
 				draggable
 				onDragStart={(e) =>
 					startHandler(
@@ -46,6 +46,11 @@ const Task = ({
 				key={task.id}
 			>
 				{task.name}
+				{task && task.completed && (
+					<div>
+						<Agree />
+					</div>
+				)}
 			</li>
 		</>
 	);

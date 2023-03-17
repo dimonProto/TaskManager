@@ -25,7 +25,8 @@ function App() {
 		changeTaskProperties,
 		createTask,
 		changeSectionProperty,
-		setActiveTask
+		setActiveTask,
+		changeTaskProperty
 	} = useAction();
 
 	const { PhantomJSX, handlePhantomPosition, clearPhantom, initPhantom } =
@@ -121,6 +122,16 @@ function App() {
 		});
 	};
 
+	const toggleTaskCompleted = (sectionId, taskId, value) => {
+		console.log(sectionId, taskId, value);
+		changeTaskProperty({
+			sectionId,
+			taskId,
+			value,
+			property: 'completed'
+		});
+	};
+	console.log(activeTask);
 	return (
 		<div className="App">
 			<Header />
@@ -148,7 +159,7 @@ function App() {
 			</main>
 			{activeTask && (
 				<TaskWindow
-					id={activeTask.id}
+					id={activeTask.task.id}
 					onClear={() => setActiveTask(null)}
 				>
 					<header className="draggable">
@@ -156,8 +167,17 @@ function App() {
 						<p>Task manager</p>
 					</header>
 					<div className="title">
-						<p>New task</p>
-						<div className="titleBtn">
+						<p>{activeTask.task.name}</p>
+						<div
+							className="titleBtn"
+							onClick={() =>
+								toggleTaskCompleted(
+									activeTask.sectionId,
+									activeTask.task.id,
+									!activeTask.task.completed
+								)
+							}
+						>
 							<Agree />
 						</div>
 					</div>

@@ -20,7 +20,8 @@ export const sectionSlice = createSlice({
 			return withSection(state, action, (section) => {
 				section.tasks.push({
 					id: uid(),
-					name: 'New task'
+					name: 'New task',
+					completed: false
 				});
 			});
 		},
