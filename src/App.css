@@ -291,4 +291,8 @@ main {
     text-indent: 34px;
     font-size: .9rem;
 }
-
+.greenAgree{
+    fill: #8ee795;
+    width: 18px;
+    height: 18px;
+}

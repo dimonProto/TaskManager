@@ -48,6 +48,9 @@ style.innerHTML = `
   .titleBtn:hover {
    background-color: #e3fbe5;
   }
+  .titleBtn.greenBtn:hover {
+   background-color: #8ee795;
+  }
   .main{
     display:flex;
     padding: 16px;
@@ -133,7 +136,12 @@ style.innerHTML = `
     overflow: hidden;
     min-height: 46px;
    }
-    
+   .greenBtn svg{
+        fill: #fbfff6;
+    }
+    .greenBtn{
+        background-color: #8ee795;
+    }
 `;
 
 export default style;

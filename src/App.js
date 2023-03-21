@@ -171,7 +171,7 @@ function App() {
 					<div className="title">
 						<p>{activeTask.task.name}</p>
 						<div
-							className="titleBtn"
+							className={`titleBtn ${isActive ? 'greenBtn' : ''}`}
 							onClick={() =>
 								toggleTaskCompleted(
 									activeTask.sectionId,

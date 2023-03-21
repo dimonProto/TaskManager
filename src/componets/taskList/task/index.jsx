@@ -48,7 +48,7 @@ const Task = ({
 				{task.name}
 				{task && task.completed && (
 					<div>
-						<Agree />
+						<Agree className="greenAgree" />
 					</div>
 				)}
 			</li>
