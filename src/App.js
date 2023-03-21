@@ -13,14 +13,14 @@ import { ReactComponent as Carrot } from './images/icons/carrot.svg';
 import { ReactComponent as Agree } from './images/icons/agree.svg';
 import { ReactComponent as Delete } from './images/icons/delete.svg';
 import { ReactComponent as User } from './images/icons/user.svg';
+import { useActiveTask } from './hooks/useActiveTask';
 
 function App() {
 	const sectionsBlocks = useSelector((state) => state.section.sections);
 	const activeTask = useSelector((state) => state.section.activeTask);
 	const startYPos = useSelector((state) => state.section.startYPosition);
-	const [isActive, setIsActive] = useState(
-		Boolean(activeTask?.task?.completed)
-	);
+
+	const selectedTask = useActiveTask();
 
 	const {
 		moveTask,
@@ -132,7 +132,6 @@ function App() {
 			value,
 			property: 'completed'
 		});
-		setIsActive(!isActive);
 	};
 
 	const changeTaskDescription = (sectionId, taskId, value) => {
@@ -170,7 +169,7 @@ function App() {
 			</main>
 			{activeTask && (
 				<TaskWindow
-					id={activeTask.task.id}
+					id={activeTask.taskId}
 					onClear={() => setActiveTask(null)}
 				>
 					<header className="draggable">
@@ -178,14 +177,16 @@ function App() {
 						<p>Task manager</p>
 					</header>
 					<div className="title">
-						<p>{activeTask.task.name}</p>
+						<p>{selectedTask.name}</p>
 						<div
-							className={`titleBtn ${isActive ? 'greenBtn' : ''}`}
+							className={`titleBtn ${
+								selectedTask.completed ? 'greenBtn' : ''
+							}`}
 							onClick={() =>
 								toggleTaskCompleted(
 									activeTask.sectionId,
-									activeTask.task.id,
-									!isActive
+									activeTask.taskId,
+									!selectedTask.completed
 								)
 							}
 						>
@@ -199,11 +200,11 @@ function App() {
 							id=""
 							cols="30"
 							rows="10"
-							value={activeTask.task.description}
+							value={selectedTask.description}
 							onChange={(e) =>
 								changeTaskDescription(
 									activeTask.sectionId,
-									activeTask.task.id,
+									activeTask.taskId,
 									e.target.value
 								)
 							}

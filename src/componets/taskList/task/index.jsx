@@ -28,7 +28,9 @@ const Task = ({
 				className="task"
 				ref={currentTaskRef}
 				style={section && { borderColor: `${section.color}` }}
-				onClick={() => setActiveTask({ task, sectionId: section.id })}
+				onClick={() =>
+					setActiveTask({ taskId: task.id, sectionId: section.id })
+				}
 				draggable
 				onDragStart={(e) =>
 					startHandler(
