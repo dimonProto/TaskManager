@@ -147,14 +147,26 @@ main {
     border-radius: 4px;
     padding: 4px 6px;
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
     position: relative;
     font-size: 20px;
     font-weight: 600;
     width: 100%;
     max-width: 252px;
 }
-
+.taskText{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.taskSubText{
+    display: flex;
+    width: 100%;
+    font-weight: 300;
+    font-size: 12px;
+    opacity: .8;
+}
 .phantom {
     position: fixed;
     background-color: #fdf8ff;

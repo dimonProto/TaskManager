@@ -134,6 +134,15 @@ function App() {
 		});
 		setIsActive(!isActive);
 	};
+
+	const changeTaskDescription = (sectionId, taskId, value) => {
+		changeTaskProperty({
+			sectionId,
+			taskId,
+			value,
+			property: 'description'
+		});
+	};
 	return (
 		<div className="App">
 			<Header />
@@ -185,7 +194,20 @@ function App() {
 					</div>
 					<div className="main">
 						<label htmlFor="">Description</label>
-						<textarea name="" id="" cols="30" rows="10"></textarea>
+						<textarea
+							name=""
+							id=""
+							cols="30"
+							rows="10"
+							value={activeTask.task.description}
+							onChange={(e) =>
+								changeTaskDescription(
+									activeTask.sectionId,
+									activeTask.task.id,
+									e.target.value
+								)
+							}
+						/>
 					</div>
 					<div className="subTask">
 						<div className="subBntMain">

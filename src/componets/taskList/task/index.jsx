@@ -45,12 +45,16 @@ const Task = ({
 				onContextMenu={(e) => rightClickTask(e, task.id, task.name)}
 				key={task.id}
 			>
-				{task.name}
-				{task && task.completed && (
-					<div>
-						<Agree className="greenAgree" />
-					</div>
-				)}
+				<span className="taskText">
+					{' '}
+					{task.name}
+					{task && task.completed && (
+						<div>
+							<Agree className="greenAgree" />
+						</div>
+					)}
+				</span>
+				<span className="taskSubText">{task.description}</span>
 			</li>
 		</>
 	);

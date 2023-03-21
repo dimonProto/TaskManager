@@ -21,7 +21,8 @@ export const sectionSlice = createSlice({
 				section.tasks.push({
 					id: uid(),
 					name: 'New task',
-					completed: false
+					completed: false,
+					description: ''
 				});
 			});
 		},
