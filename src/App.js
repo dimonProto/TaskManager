@@ -29,7 +29,8 @@ function App() {
 		createTask,
 		changeSectionProperty,
 		setActiveTask,
-		changeTaskProperty
+		changeTaskProperty,
+		addSubTask
 	} = useAction();
 
 	const { PhantomJSX, handlePhantomPosition, clearPhantom, initPhantom } =
@@ -213,25 +214,37 @@ function App() {
 					<div className="subTask">
 						<div className="subBntMain">
 							<p>Sub Task</p>
-							<div className="subBnt">
+							<div
+								className="subBnt"
+								onClick={() =>
+									addSubTask({
+										sectionId: activeTask.sectionId,
+										taskId: activeTask.taskId
+									})
+								}
+							>
 								<span>Add</span>
 							</div>
 						</div>
 						<ul className="subList">
-							<li>
-								<User className="subUser" />
-								<input
-									type="text"
-									placeholder="New note"
-									className="subInput"
-								/>
-								<div className="subSettings">
-									<Delete className="subDelete" />
-									<div className="titleBtn">
-										<Agree />
-									</div>
-								</div>
-							</li>
+							{selectedTask.subTask.map((subTask) => {
+								return (
+									<li key={subTask.id}>
+										<User className="subUser" />
+										<input
+											type="text"
+											placeholder="New note"
+											className="subInput"
+										/>
+										<div className="subSettings">
+											<Delete className="subDelete" />
+											<div className="titleBtn">
+												<Agree />
+											</div>
+										</div>
+									</li>
+								);
+							})}
 						</ul>
 					</div>
 				</TaskWindow>

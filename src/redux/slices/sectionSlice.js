@@ -22,7 +22,8 @@ export const sectionSlice = createSlice({
 					id: uid(),
 					name: 'New task',
 					completed: false,
-					description: ''
+					description: '',
+					subTask: []
 				});
 			});
 		},
@@ -78,7 +79,15 @@ export const sectionSlice = createSlice({
 				}
 			});
 		},
-
+		addSubTask: (state, action) => {
+			return withTask(state, action, (task) => {
+				task?.subTask.push({
+					id: uid(),
+					description: '',
+					completed: false
+				});
+			});
+		},
 		setActiveTask: (state, action) => {
 			state.activeTask = action.payload;
 		}
