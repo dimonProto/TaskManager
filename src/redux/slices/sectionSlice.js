@@ -81,11 +81,17 @@ export const sectionSlice = createSlice({
 		},
 		addSubTask: (state, action) => {
 			return withTask(state, action, (task) => {
-				task?.subTask.push({
-					id: uid(),
-					description: '',
-					completed: false
-				});
+				task.subTask = [
+					{ id: uid(), description: '', completed: false },
+					...task.subTask
+				];
+			});
+		},
+		deleteSubTask: (state, action) => {
+			return withTask(state, action, (task) => {
+				task.subTask = task.subTask.removeById(
+					action.payload.subTaskId
+				);
 			});
 		},
 		setActiveTask: (state, action) => {

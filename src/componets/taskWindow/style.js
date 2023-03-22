@@ -91,6 +91,9 @@ style.innerHTML = `
   .subBnt:hover{
      background-color: #eee;
   }
+  .subList{
+        transition: all 2s;
+  }
   .subList li{
     display: flex;
     align-items: flex-start;
@@ -98,6 +101,7 @@ style.innerHTML = `
     padding: 4px 6px;
     background-color: #fff;
     border-bottom: 1px solid #eee;
+    transition: all 1s;
    }
    .subUser{
    fill:#b0b0b0;
@@ -141,6 +145,21 @@ style.innerHTML = `
     }
     .greenBtn{
         background-color: #8ee795;
+    }
+    .animateTask {
+      transition: all 1s;
+      animation: ani 1s backwards;
+    }
+
+    @keyframes ani {
+      0% {
+      opacity: 0;
+      transform: translateY(-20px);
+      }
+      100% {
+      opacity: 1;
+      transform: translateY(0);
+      }
     }
 `;
 

@@ -30,7 +30,8 @@ function App() {
 		changeSectionProperty,
 		setActiveTask,
 		changeTaskProperty,
-		addSubTask
+		addSubTask,
+		deleteSubTask
 	} = useAction();
 
 	const { PhantomJSX, handlePhantomPosition, clearPhantom, initPhantom } =
@@ -229,7 +230,10 @@ function App() {
 						<ul className="subList">
 							{selectedTask.subTask.map((subTask) => {
 								return (
-									<li key={subTask.id}>
+									<li
+										key={subTask.id}
+										className="animateTask"
+									>
 										<User className="subUser" />
 										<input
 											type="text"
@@ -237,7 +241,17 @@ function App() {
 											className="subInput"
 										/>
 										<div className="subSettings">
-											<Delete className="subDelete" />
+											<Delete
+												className="subDelete"
+												onClick={() =>
+													deleteSubTask({
+														sectionId:
+															activeTask.sectionId,
+														taskId: activeTask.taskId,
+														subTaskId: subTask.id
+													})
+												}
+											/>
 											<div className="titleBtn">
 												<Agree />
 											</div>
