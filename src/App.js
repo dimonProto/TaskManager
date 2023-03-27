@@ -9,11 +9,8 @@ import { uid } from 'uid';
 import { HEIGHT_TASK, WIDTH_SECTION } from './utils/constant';
 import TaskWindow from './componets/taskWindow';
 import { usePhantom } from './hooks/usePhantom';
-import { ReactComponent as Carrot } from './images/icons/carrot.svg';
-import { ReactComponent as Agree } from './images/icons/agree.svg';
-import { ReactComponent as Delete } from './images/icons/delete.svg';
-import { ReactComponent as User } from './images/icons/user.svg';
 import { useActiveTask } from './hooks/useActiveTask';
+import TaskDetail from './componets/taskDetail';
 
 function App() {
 	const sectionsBlocks = useSelector((state) => state.section.sections);
@@ -195,113 +192,16 @@ function App() {
 					id={activeTask.taskId}
 					onClear={() => setActiveTask(null)}
 				>
-					<header className="draggable">
-						<Carrot className="header--img" />
-						<p>Task manager</p>
-					</header>
-					<div className="title">
-						<p>{selectedTask.name}</p>
-						<div
-							className={`titleBtn ${
-								selectedTask.completed ? 'greenBtn' : ''
-							}`}
-							onClick={() =>
-								toggleTaskCompleted(
-									activeTask.sectionId,
-									activeTask.taskId,
-									!selectedTask.completed
-								)
-							}
-						>
-							<Agree />
-						</div>
-					</div>
-					<div className="main">
-						<label htmlFor="">Description</label>
-						<textarea
-							name=""
-							id=""
-							cols="30"
-							rows="10"
-							value={selectedTask.description}
-							onChange={(e) =>
-								changeTaskDescription(
-									activeTask.sectionId,
-									activeTask.taskId,
-									e.target.value
-								)
-							}
-						/>
-					</div>
-					<div className="subTask">
-						<div className="subBntMain">
-							<p>Sub Task</p>
-							<div
-								className="subBnt"
-								onClick={() =>
-									addSubTask({
-										sectionId: activeTask.sectionId,
-										taskId: activeTask.taskId
-									})
-								}
-							>
-								<span>Add</span>
-							</div>
-						</div>
-						<ul className="subList">
-							{selectedTask.subTasks.map((subTask) => {
-								return (
-									<li
-										key={subTask.id}
-										className={`animateTask ${
-											subTask.completed ? 'greenBg' : ''
-										}`}
-									>
-										<User className="subUser" />
-										<input
-											type="text"
-											placeholder="New note"
-											className="subInput"
-											value={subTask.description}
-											onChange={(e) =>
-												changeSubTaskDescription(
-													activeTask.sectionId,
-													activeTask.taskId,
-													subTask.id,
-													e.target.value
-												)
-											}
-										/>
-										<div className="subSettings">
-											<Delete
-												className="subDelete"
-												onClick={() =>
-													deleteSubTask({
-														sectionId:
-															activeTask.sectionId,
-														taskId: activeTask.taskId,
-														subTaskId: subTask.id
-													})
-												}
-											/>
-											<div className="titleBtn">
-												<Agree
-													onClick={() => {
-														changeSubTaskCompleted(
-															activeTask.sectionId,
-															activeTask.taskId,
-															subTask.id,
-															!subTask.completed
-														);
-													}}
-												/>
-											</div>
-										</div>
-									</li>
-								);
-							})}
-						</ul>
-					</div>
+					<TaskDetail
+						selectedTask={selectedTask}
+						toggleTaskCompleted={toggleTaskCompleted}
+						activeTask={activeTask}
+						changeTaskDescription={changeTaskDescription}
+						addSubTask={addSubTask}
+						changeSubTaskDescription={changeSubTaskDescription}
+						deleteSubTask={deleteSubTask}
+						changeSubTaskCompleted={changeSubTaskCompleted}
+					/>
 				</TaskWindow>
 			)}
 		</div>

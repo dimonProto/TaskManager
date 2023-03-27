@@ -24,13 +24,14 @@ const Task = ({
 	if (!task) return;
 
 	const calculateProgress = () => {
-		if (!task.subTasks) return 0;
+		if (task.subTasks && task.subTasks.length === 0) return 0;
 		const subTaskProportionSize = 100 / task.subTasks.length;
 		return (
 			task.subTasks.filter((el) => el.completed).length *
 			subTaskProportionSize
 		);
 	};
+	console.log(calculateProgress(), 'task.subTasks.length');
 	return (
 		<>
 			<li
@@ -71,7 +72,7 @@ const Task = ({
 				<div
 					className={`absBg greenBg`}
 					style={{
-						width: calculateProgress() + '%'
+						width: +calculateProgress() + '%'
 					}}
 				></div>
 			</li>
