@@ -31,7 +31,6 @@ const Task = ({
 			subTaskProportionSize
 		);
 	};
-	console.log(calculateProgress(), 'task.subTasks.length');
 	return (
 		<>
 			<li
