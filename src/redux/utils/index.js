@@ -6,3 +6,8 @@ export const withTask = (state, action, callback) => {
 	const section = state.sections.findById(action.payload.sectionId);
 	callback(section && section.tasks.findById(action.payload.taskId));
 };
+export const withSubTask = (state, action, callback) => {
+	const section = state.sections.findById(action.payload.sectionId);
+	const task = section && section.tasks.findById(action.payload.taskId);
+	callback(task && task.subTask.findById(action.payload.subTaskId));
+};

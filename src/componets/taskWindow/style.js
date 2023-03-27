@@ -150,6 +150,9 @@ style.innerHTML = `
       transition: all 1s;
       animation: ani 1s backwards;
     }
+    .greenBg{
+    background-image: linear-gradient(to right,rgba(77,215,77,.188),rgba(38,158,38,.113),rgba(127,197,206,.201));
+    }
 
     @keyframes ani {
       0% {

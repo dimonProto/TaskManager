@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import '../../utils/helpers/index';
 import { uid } from 'uid';
-import { withSection, withTask } from '../utils';
+import { withSection, withSubTask, withTask } from '../utils';
 
 const initialState = {
 	sections: [],
@@ -92,6 +92,12 @@ export const sectionSlice = createSlice({
 				task.subTask = task.subTask.removeById(
 					action.payload.subTaskId
 				);
+			});
+		},
+		changeSubTaskProperty: (state, action) => {
+			return withSubTask(state, action, (subTask) => {
+				const { value, property } = action.payload;
+				subTask[property] = value;
 			});
 		},
 		setActiveTask: (state, action) => {

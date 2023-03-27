@@ -22,12 +22,23 @@ const Task = ({
 		handleTaskPosition(currentTaskRef.current);
 	}, [currentTaskRef]);
 	if (!task) return;
+
+	const calculateProgress = () => {
+		if (!task.subTask) return 0;
+		const subTaskProportionSize = 100 / task.subTask.length;
+		return (
+			task.subTask.filter((el) => el.completed).length *
+			subTaskProportionSize
+		);
+	};
 	return (
 		<>
 			<li
-				className="task"
+				className={`task`}
 				ref={currentTaskRef}
-				style={section && { borderColor: `${section.color}` }}
+				style={{
+					borderColor: section && section.color
+				}}
 				onClick={() =>
 					setActiveTask({ taskId: task.id, sectionId: section.id })
 				}
@@ -57,6 +68,12 @@ const Task = ({
 					)}
 				</span>
 				<span className="taskSubText">{task.description}</span>
+				<div
+					className={`absBg greenBg`}
+					style={{
+						width: calculateProgress() + '%'
+					}}
+				></div>
 			</li>
 		</>
 	);

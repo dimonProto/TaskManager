@@ -154,11 +154,17 @@ main {
     width: 100%;
     max-width: 252px;
 }
+.absBg{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
 .taskText{
     display: flex;
     width: 100%;
     justify-content: space-between;
-    margin-bottom: 5px;
+
 }
 .taskSubText{
     display: flex;
@@ -307,4 +313,7 @@ main {
     fill: #8ee795;
     width: 18px;
     height: 18px;
+}
+.greenBg{
+    background: linear-gradient(to right,rgba(77,215,77,.188),rgba(38,158,38,.113),rgba(127,197,206,.201));
 }

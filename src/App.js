@@ -31,7 +31,8 @@ function App() {
 		setActiveTask,
 		changeTaskProperty,
 		addSubTask,
-		deleteSubTask
+		deleteSubTask,
+		changeSubTaskProperty
 	} = useAction();
 
 	const { PhantomJSX, handlePhantomPosition, clearPhantom, initPhantom } =
@@ -144,6 +145,26 @@ function App() {
 			property: 'description'
 		});
 	};
+
+	const changeSubTaskCompleted = (sectionId, taskId, subTaskId, value) => {
+		changeSubTaskProperty({
+			sectionId,
+			taskId,
+			subTaskId,
+			value,
+			property: 'completed'
+		});
+	};
+
+	const changeSubTaskDescription = (sectionId, taskId, subTaskId, value) => {
+		changeSubTaskProperty({
+			sectionId,
+			taskId,
+			subTaskId,
+			value,
+			property: 'description'
+		});
+	};
 	return (
 		<div className="App">
 			<Header />
@@ -232,13 +253,24 @@ function App() {
 								return (
 									<li
 										key={subTask.id}
-										className="animateTask"
+										className={`animateTask ${
+											subTask.completed ? 'greenBg' : ''
+										}`}
 									>
 										<User className="subUser" />
 										<input
 											type="text"
 											placeholder="New note"
 											className="subInput"
+											value={subTask.description}
+											onChange={(e) =>
+												changeSubTaskDescription(
+													activeTask.sectionId,
+													activeTask.taskId,
+													subTask.id,
+													e.target.value
+												)
+											}
 										/>
 										<div className="subSettings">
 											<Delete
@@ -253,7 +285,16 @@ function App() {
 												}
 											/>
 											<div className="titleBtn">
-												<Agree />
+												<Agree
+													onClick={() => {
+														changeSubTaskCompleted(
+															activeTask.sectionId,
+															activeTask.taskId,
+															subTask.id,
+															!subTask.completed
+														);
+													}}
+												/>
 											</div>
 										</div>
 									</li>
