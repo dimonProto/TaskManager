@@ -249,7 +249,7 @@ function App() {
 							</div>
 						</div>
 						<ul className="subList">
-							{selectedTask.subTask.map((subTask) => {
+							{selectedTask.subTasks.map((subTask) => {
 								return (
 									<li
 										key={subTask.id}

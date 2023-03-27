@@ -23,7 +23,7 @@ export const sectionSlice = createSlice({
 					name: 'New task',
 					completed: false,
 					description: '',
-					subTask: []
+					subTasks: []
 				});
 			});
 		},
@@ -81,15 +81,15 @@ export const sectionSlice = createSlice({
 		},
 		addSubTask: (state, action) => {
 			return withTask(state, action, (task) => {
-				task.subTask = [
+				task.subTasks = [
 					{ id: uid(), description: '', completed: false },
-					...task.subTask
+					...task.subTasks
 				];
 			});
 		},
 		deleteSubTask: (state, action) => {
 			return withTask(state, action, (task) => {
-				task.subTask = task.subTask.removeById(
+				task.subTasks = task.subTasks.removeById(
 					action.payload.subTaskId
 				);
 			});

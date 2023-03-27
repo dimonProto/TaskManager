@@ -24,10 +24,10 @@ const Task = ({
 	if (!task) return;
 
 	const calculateProgress = () => {
-		if (!task.subTask) return 0;
-		const subTaskProportionSize = 100 / task.subTask.length;
+		if (!task.subTasks) return 0;
+		const subTaskProportionSize = 100 / task.subTasks.length;
 		return (
-			task.subTask.filter((el) => el.completed).length *
+			task.subTasks.filter((el) => el.completed).length *
 			subTaskProportionSize
 		);
 	};
