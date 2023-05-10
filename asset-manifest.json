@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/TaskManager/static/css/main.8cfc9ba8.css",
+    "main.js": "/TaskManager/static/js/main.8fc56d0f.js",
+    "static/media/carrot.svg": "/TaskManager/static/media/carrot.2e5c2e54e2e975786e16e096a15aaa24.svg",
+    "index.html": "/TaskManager/index.html",
+    "static/media/user.svg": "/TaskManager/static/media/user.eff21efaf38078b203cc313663761eec.svg",
+    "static/media/delete.svg": "/TaskManager/static/media/delete.0cc808dcdd80484eed8c84975baba6b1.svg",
+    "static/media/agree.svg": "/TaskManager/static/media/agree.3ce2da2bff9a04ca2c75b86f2ca18396.svg",
+    "static/media/plus.svg": "/TaskManager/static/media/plus.074ccca777bcbd34cb2eab0959b79e95.svg",
+    "static/media/check.svg": "/TaskManager/static/media/check.05483f1dfb152780d2d49efdc9ddabca.svg",
+    "main.8cfc9ba8.css.map": "/TaskManager/static/css/main.8cfc9ba8.css.map",
+    "main.8fc56d0f.js.map": "/TaskManager/static/js/main.8fc56d0f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8cfc9ba8.css",
+    "static/js/main.8fc56d0f.js"
+  ]
+}
