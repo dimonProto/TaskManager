@@ -36,7 +36,11 @@ export const sectionSlice = createSlice({
 			const cut = oldSection.tasks.splice(task.oldPosition, 1)[0];
 			newSection.tasks.splice(task.newPosition, 0, cut);
 		},
-
+		moveSection: (state, { payload }) => {
+			const { section } = payload;
+			const cut = state.sections.splice(section.oldPosition, 1)[0];
+			state.sections.splice(section.newPosition, 0, cut);
+		},
 		changeSectionProperty: (state, action) => {
 			return withSection(state, action, (section) => {
 				section[action.payload.property] = action.payload.value;

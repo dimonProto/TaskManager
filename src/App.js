@@ -29,13 +29,15 @@ function App() {
 		changeTaskProperty,
 		addSubTask,
 		deleteSubTask,
-		changeSubTaskProperty
+		changeSubTaskProperty,
+		moveSection
 	} = useAction();
 
 	const { PhantomJSX, handlePhantomPosition, clearPhantom, initPhantom } =
 		usePhantom();
 	const [oldSectionId, setOldSectionId] = useState(null);
 	const [oldTaskPosition, setOldTaskPosition] = useState(null);
+	const [oldSectionPosition, setOldSectionPosition] = useState(null);
 	const sectionsRef = useRef();
 
 	const startHandler = (e, task, sectionId, idx) => {
@@ -51,6 +53,10 @@ function App() {
 			x: targetElement.getBoundingClientRect().left,
 			y: targetElement.getBoundingClientRect().top
 		});
+	};
+
+	const startSectionHandler = (idx) => {
+		setOldSectionPosition(idx);
 	};
 
 	const dragHandler = (e) => {
@@ -93,6 +99,20 @@ function App() {
 			newSectionId: sectionId,
 			oldSectionId: oldSectionId,
 			task
+		});
+	};
+	const endSectionHandler = (e) => {
+		e.preventDefault();
+
+		const idxSection = Math.floor(e.pageX / WIDTH_SECTION);
+
+		const section = {
+			oldPosition: oldSectionPosition,
+			newPosition: idxSection
+		};
+
+		moveSection({
+			section
 		});
 	};
 
@@ -168,13 +188,16 @@ function App() {
 			<PhantomJSX />
 			<main>
 				<div className="main--section" ref={sectionsRef}>
-					{sectionsBlocks.map((el) => {
+					{sectionsBlocks.map((el, idxPositionSection) => {
 						return (
 							<Section
 								startHandler={startHandler}
 								dragHandler={dragHandler}
 								endHandler={endHandler}
 								handleTaskPosition={handleTaskPosition}
+								startSectionHandler={startSectionHandler}
+								endSectionHandler={endSectionHandler}
+								idxPositionSection={idxPositionSection}
 								key={el.id}
 								addTask={() => createTask({ sectionId: el.id })}
 								section={el}

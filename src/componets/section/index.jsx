@@ -12,6 +12,9 @@ const Section = ({
 	section,
 	changeName,
 	newPositionTask,
+	startSectionHandler,
+	endSectionHandler,
+	idxPositionSection,
 	...props
 }) => {
 	const { createTask } = useAction();
@@ -41,7 +44,14 @@ const Section = ({
 
 	return (
 		<>
-			<div className="section" onContextMenu={rightClickSection}>
+			<div
+				key={section.id}
+				className="section"
+				draggable
+				onDragStart={() => startSectionHandler(idxPositionSection)}
+				onDragEnd={(e) => endSectionHandler(e)}
+				onContextMenu={rightClickSection}
+			>
 				<div className="section--header">
 					<div
 						className="section--input"
