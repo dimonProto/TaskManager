@@ -43,17 +43,21 @@ const Task = ({
 					setActiveTask({ taskId: task.id, sectionId: section.id })
 				}
 				draggable
-				onDragStart={(e) =>
-					startHandler(
+				onDragStart={(e) => {
+					e.stopPropagation();
+					return startHandler(
 						e,
 						task,
 						section.id,
 						idx,
 						currentTaskRef.current
-					)
-				}
+					);
+				}}
 				onDrag={(e) => dragHandler(e)}
-				onDragEnd={(e) => endHandler(e, currentTaskRef.current)}
+				onDragEnd={(e) => {
+					e.stopPropagation();
+					return endHandler(e);
+				}}
 				color={color}
 				onContextMenu={(e) => rightClickTask(e, task.id, task.name)}
 				key={task.id}

@@ -12,9 +12,10 @@ const Section = ({
 	section,
 	changeName,
 	newPositionTask,
-	startSectionHandler,
-	endSectionHandler,
+
 	idxPositionSection,
+	startHandler,
+	endHandler,
 	...props
 }) => {
 	const { createTask } = useAction();
@@ -46,10 +47,12 @@ const Section = ({
 		<>
 			<div
 				key={section.id}
-				className="section"
 				draggable
-				onDragStart={() => startSectionHandler(idxPositionSection)}
-				onDragEnd={(e) => endSectionHandler(e)}
+				onDragStart={(e) =>
+					startHandler(e, null, section.id, idxPositionSection)
+				}
+				onDragEnd={(e) => endHandler(e)}
+				className="section"
 				onContextMenu={rightClickSection}
 			>
 				<div className="section--header">
@@ -70,6 +73,8 @@ const Section = ({
 				<TaskList
 					section={section}
 					rightClickTask={rightClickTask}
+					startHandler={startHandler}
+					endHandler={endHandler}
 					toggleTaskModal={setIsShowTaskModal}
 					showTaskModal={isShowTaskModal}
 					cursorPosition={cursorPosition}

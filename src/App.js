@@ -12,6 +12,9 @@ import { usePhantom } from './hooks/usePhantom';
 import { useActiveTask } from './hooks/useActiveTask';
 import TaskDetail from './componets/taskDetail';
 
+const TASK_DRAG_TYPE = 'task';
+const SECTION_DRAG_TYPE = 'section';
+
 function App() {
 	const sectionsBlocks = useSelector((state) => state.section.sections);
 	const activeTask = useSelector((state) => state.section.activeTask);
@@ -38,25 +41,27 @@ function App() {
 	const [oldSectionId, setOldSectionId] = useState(null);
 	const [oldTaskPosition, setOldTaskPosition] = useState(null);
 	const [oldSectionPosition, setOldSectionPosition] = useState(null);
+	const [dragType, setDragType] = useState(null);
 	const sectionsRef = useRef();
 
 	const startHandler = (e, task, sectionId, idx) => {
 		const targetElement = e.target;
-
-		setTimeout(() => {
-			targetElement.style.visibility = 'hidden';
-		}, 10);
-
-		setOldTaskPosition(idx);
-		setOldSectionId(sectionId);
-		initPhantom(task, {
-			x: targetElement.getBoundingClientRect().left,
-			y: targetElement.getBoundingClientRect().top
-		});
-	};
-
-	const startSectionHandler = (idx) => {
-		setOldSectionPosition(idx);
+		console.log(task, 'task');
+		if (task) {
+			setTimeout(() => {
+				targetElement.style.visibility = 'hidden';
+			}, 10);
+			setOldTaskPosition(idx);
+			setOldSectionId(sectionId);
+			initPhantom(task, {
+				x: targetElement.getBoundingClientRect().left,
+				y: targetElement.getBoundingClientRect().top
+			});
+			setDragType(TASK_DRAG_TYPE);
+		} else {
+			setDragType(SECTION_DRAG_TYPE);
+			setOldSectionPosition(idx);
+		}
 	};
 
 	const dragHandler = (e) => {
@@ -73,7 +78,8 @@ function App() {
 			startYPos,
 			taskList[taskList.length - 1] || null,
 			idxSection,
-			sectionsBlocks[idxSection].id === oldSectionId
+			sectionsBlocks[idxSection].id === oldSectionId,
+			e.target.offsetHeight
 		);
 	};
 
@@ -86,34 +92,31 @@ function App() {
 	const endHandler = (e) => {
 		e.preventDefault();
 		const idxSection = Math.floor(e.pageX / WIDTH_SECTION);
-		const sectionId = sectionsBlocks[idxSection]?.id;
-		clearPhantom();
-		e.target.style.visibility = 'visible';
 
-		const task = {
-			oldPosition: oldTaskPosition,
-			newPosition: currentPositionTask(e)
-		};
+		if (dragType === TASK_DRAG_TYPE) {
+			const sectionId = sectionsBlocks[idxSection]?.id;
+			clearPhantom();
+			e.target.style.visibility = 'visible';
 
-		moveTask({
-			newSectionId: sectionId,
-			oldSectionId: oldSectionId,
-			task
-		});
-	};
-	const endSectionHandler = (e) => {
-		e.preventDefault();
+			const task = {
+				oldPosition: oldTaskPosition,
+				newPosition: currentPositionTask(e)
+			};
 
-		const idxSection = Math.floor(e.pageX / WIDTH_SECTION);
-
-		const section = {
-			oldPosition: oldSectionPosition,
-			newPosition: idxSection
-		};
-
-		moveSection({
-			section
-		});
+			moveTask({
+				newSectionId: sectionId,
+				oldSectionId: oldSectionId,
+				task
+			});
+		} else if (dragType === SECTION_DRAG_TYPE) {
+			const section = {
+				oldPosition: oldSectionPosition,
+				newPosition: idxSection
+			};
+			moveSection({
+				section
+			});
+		}
 	};
 
 	const handleTaskPosition = (sectionId, taskId, taskElement) => {
@@ -195,8 +198,6 @@ function App() {
 								dragHandler={dragHandler}
 								endHandler={endHandler}
 								handleTaskPosition={handleTaskPosition}
-								startSectionHandler={startSectionHandler}
-								endSectionHandler={endSectionHandler}
 								idxPositionSection={idxPositionSection}
 								key={el.id}
 								addTask={() => createTask({ sectionId: el.id })}
