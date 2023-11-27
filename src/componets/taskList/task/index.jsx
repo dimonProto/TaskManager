@@ -11,16 +11,17 @@ const Task = ({
 	dragHandler,
 	endHandler,
 	handleTaskPosition,
-	rightClickTask
+	rightClickTask,
+	idxPositionSection
 }) => {
 	const currentTaskRef = useRef();
-
 	const { setActiveTask } = useAction();
 
 	useEffect(() => {
 		if (!currentTaskRef || !currentTaskRef.current) return;
 		handleTaskPosition(currentTaskRef.current);
-	}, [currentTaskRef]);
+	}, [currentTaskRef, idxPositionSection]);
+
 	if (!task) return;
 
 	const calculateProgress = () => {

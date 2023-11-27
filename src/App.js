@@ -46,7 +46,6 @@ function App() {
 
 	const startHandler = (e, task, sectionId, idx) => {
 		const targetElement = e.target;
-		console.log(task, 'task');
 		if (task) {
 			setTimeout(() => {
 				targetElement.style.visibility = 'hidden';
@@ -70,7 +69,7 @@ function App() {
 		const idxSection = Math.floor(e.pageX / WIDTH_SECTION);
 		const taskOrder = currentPositionTask(e);
 		const taskList = sectionsBlocks[idxSection]?.tasks;
-		if (taskOrder <= 0) return;
+		if (taskOrder <= 0 || !taskList) return;
 
 		handlePhantomPosition(
 			taskList[taskOrder - 1],

@@ -55,12 +55,6 @@ export const sectionSlice = createSlice({
 			});
 		},
 
-		setTaskPosition: (state, action) => {
-			return withTask(state, action, (task) => {
-				task.x = action.payload.x;
-				task.y = action.payload.y;
-			});
-		},
 		changeTaskProperty: (state, action) => {
 			return withTask(state, action, (task) => {
 				const { value, property } = action.payload;

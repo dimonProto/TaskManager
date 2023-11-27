@@ -24,8 +24,12 @@ const TaskList = ({
 						section={section}
 						idx={idx}
 						rightClickTask={rightClickTask}
-						handleTaskPosition={(pos) => {
-							handleTaskPosition(section.id, task.id, pos);
+						handleTaskPosition={(currentPosition) => {
+							handleTaskPosition(
+								section.id,
+								task.id,
+								currentPosition
+							);
 						}}
 						{...props}
 					/>

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { SECTION_GAP, WIDTH_SECTION } from '../utils/constant';
+import { HEIGHT_TASK, SECTION_GAP, WIDTH_SECTION } from '../utils/constant';
 import Task from '../componets/taskList/task';
 
 export const usePhantom = () => {
@@ -19,8 +19,7 @@ export const usePhantom = () => {
 		zeroY,
 		lastTask,
 		idxSection,
-		isGoAway,
-		height
+		isGoAway
 	) => {
 		if (hoveredTask) {
 			setPositionPhantom(hoveredTask.x, hoveredTask.y);
@@ -31,7 +30,7 @@ export const usePhantom = () => {
 
 			const phantomPositionY = isGoAway
 				? lastTask.y
-				: lastTask.y + height;
+				: lastTask.y + HEIGHT_TASK;
 			setPositionPhantom(lastTask.x, phantomPositionY);
 		}
 

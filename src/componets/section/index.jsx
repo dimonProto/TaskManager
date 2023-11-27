@@ -12,7 +12,6 @@ const Section = ({
 	section,
 	changeName,
 	newPositionTask,
-
 	idxPositionSection,
 	startHandler,
 	endHandler,
@@ -81,6 +80,7 @@ const Section = ({
 					taskId={taskId}
 					taskName={taskName}
 					setTaskName={setTaskName}
+					idxPositionSection={idxPositionSection}
 					{...props}
 				/>
 			</div>
