@@ -153,6 +153,9 @@ main {
     font-weight: 600;
     width: 100%;
     max-width: 252px;
+    max-height: 105px;
+    overflow: hidden;
+    white-space: pre-wrap;
 }
 .absBg{
     position: absolute;
@@ -167,16 +170,21 @@ main {
 
 }
 .taskSubText{
-    display: flex;
-    width: 100%;
     font-weight: 300;
     font-size: 12px;
     opacity: .8;
+    width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+
 }
 .phantom {
     position: fixed;
     background-color: #fdf8ff;
     width: 252px;
+    top: -50px;
 }
 
 .task:hover {
