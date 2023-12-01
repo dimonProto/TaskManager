@@ -70,15 +70,13 @@ function App() {
 		const taskOrder = currentPositionTask(e);
 		const taskList = sectionsBlocks[idxSection]?.tasks;
 		if (taskOrder <= 0 || !taskList) return;
-
 		handlePhantomPosition(
 			taskList[taskOrder - 1],
 			taskList.length === 0,
 			startYPos,
 			taskList[taskList.length - 1] || null,
 			idxSection,
-			sectionsBlocks[idxSection].id === oldSectionId,
-			e.target.offsetHeight
+			sectionsBlocks[idxSection].id === oldSectionId
 		);
 	};
 
@@ -122,10 +120,11 @@ function App() {
 		changeTaskProperties({
 			sectionId,
 			taskId,
-			property: ['x', 'y'],
+			property: ['x', 'y', 'height'],
 			value: [
 				taskElement.getBoundingClientRect().left,
-				taskElement.getBoundingClientRect().top
+				taskElement.getBoundingClientRect().top,
+				taskElement.getBoundingClientRect().height
 			]
 		});
 	};
