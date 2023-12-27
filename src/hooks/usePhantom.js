@@ -4,13 +4,21 @@ import Task from '../componets/taskList/task';
 
 export const usePhantom = () => {
 	const [phantomTask, setPhantomTask] = useState(null);
+	const [phantomSection, setPhantomSection] = useState(null);
 
 	const phantomRef = useRef();
 
 	const setPositionPhantom = (left, top) => {
 		if (!phantomRef) return null;
-		phantomRef.current.style.left = left + 'px';
-		phantomRef.current.style.top = top + 'px';
+		if (phantomTask) {
+			phantomRef.current.style.left = left + 'px';
+			phantomRef.current.style.top = top + 'px';
+		}
+
+		if (phantomSection) {
+			phantomRef.current.style.left = left + 'px';
+			phantomRef.current.style.top = top + 'px';
+		}
 	};
 
 	const handlePhantomPosition = (
@@ -21,39 +29,68 @@ export const usePhantom = () => {
 		idxSection,
 		isGoAway
 	) => {
-		if (hoveredTask) {
-			setPositionPhantom(hoveredTask.x, hoveredTask.y);
+		if (phantomTask) {
+			if (hoveredTask) {
+				setPositionPhantom(hoveredTask.x, hoveredTask.y);
+			}
+
+			if (!hoveredTask && !isEmptySection) {
+				if (phantomTask.id === lastTask.id && !isGoAway) return;
+
+				const phantomPositionY = isGoAway
+					? lastTask.y
+					: lastTask.y + lastTask.height + TASK_GAP;
+				setPositionPhantom(lastTask.x, phantomPositionY);
+			}
+
+			if (!hoveredTask && isEmptySection) {
+				const zeroX = WIDTH_SECTION * idxSection + SECTION_GAP * 2;
+				setPositionPhantom(zeroX, zeroY);
+			}
 		}
-
-		if (!hoveredTask && !isEmptySection) {
-			if (phantomTask.id === lastTask.id && !isGoAway) return;
-
-			const phantomPositionY = isGoAway
-				? lastTask.y
-				: lastTask.y + lastTask.height + TASK_GAP;
-			setPositionPhantom(lastTask.x, phantomPositionY);
-		}
-
-		if (!hoveredTask && isEmptySection) {
-			const zeroX = WIDTH_SECTION * idxSection + SECTION_GAP * 2;
-			setPositionPhantom(zeroX, zeroY);
+		if (phantomSection) {
+			setPositionPhantom(phantomSection.x, phantomSection.y);
 		}
 	};
 	const clearPhantom = () => {
 		setPhantomTask(null);
+		setPhantomSection(null);
 	};
-	const initPhantom = (task, position) => {
-		setPositionPhantom(position);
-		setPhantomTask(task);
+	const initPhantom = (element, phantomElem, position) => {
+		if (element === 'task') {
+			setPositionPhantom(position);
+			setPhantomTask(phantomElem);
+		}
+		if (element === 'section') {
+			setPositionPhantom(position);
+			setPhantomSection(phantomElem);
+		}
 	};
+
 	const PhantomJSX = () => {
 		return (
-			<span ref={phantomRef} className="phantom">
-				<Task
-					task={phantomTask && phantomTask}
-					handleTaskPosition={() => {}}
-				/>
-			</span>
+			<>
+				{phantomTask && (
+					<span ref={phantomRef} className="phantom">
+						<Task
+							task={phantomTask && phantomTask}
+							handleTaskPosition={() => {}}
+						/>
+					</span>
+				)}
+				{phantomSection && (
+					<span
+						ref={phantomRef}
+						className="phantom"
+						style={{ height: '100%' }}
+					>
+						<div
+							className="add--section"
+							style={{ height: '100%' }}
+						></div>
+					</span>
+				)}
+			</>
 		);
 	};
 

@@ -1,9 +1,13 @@
 import React from 'react';
 import { ReactComponent as Plus } from '../../images/icons/plus.svg';
 
-const CreateSection = ({ addSection }) => {
+const CreateSection = ({ addSection, createSectionsRef }) => {
 	return (
-		<div className="add--section" onClick={addSection}>
+		<div
+			ref={createSectionsRef}
+			className="add--section"
+			onClick={() => addSection(createSectionsRef.current)}
+		>
 			<span>Add section </span>
 			<Plus />
 		</div>

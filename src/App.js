@@ -33,7 +33,8 @@ function App() {
 		addSubTask,
 		deleteSubTask,
 		changeSubTaskProperty,
-		moveSection
+		moveSection,
+		changeSectionProperties
 	} = useAction();
 
 	const { PhantomJSX, handlePhantomPosition, clearPhantom, initPhantom } =
@@ -42,17 +43,20 @@ function App() {
 	const [oldTaskPosition, setOldTaskPosition] = useState(null);
 	const [oldSectionPosition, setOldSectionPosition] = useState(null);
 	const [dragType, setDragType] = useState(null);
-	const sectionsRef = useRef();
 
-	const startHandler = (e, task, sectionId, idx) => {
+	const sectionsRef = useRef();
+	const createSectionsRef = useRef();
+
+	const startHandler = (e, task, section, idx, sectionsRef) => {
 		const targetElement = e.target;
+		let id = section.id;
 		if (task) {
 			setTimeout(() => {
 				targetElement.style.visibility = 'hidden';
 			}, 10);
 			setOldTaskPosition(idx);
-			setOldSectionId(sectionId);
-			initPhantom(task, {
+			setOldSectionId(section.id);
+			initPhantom('task', task, {
 				x: targetElement.getBoundingClientRect().left,
 				y: targetElement.getBoundingClientRect().top
 			});
@@ -60,6 +64,11 @@ function App() {
 		} else {
 			setDragType(SECTION_DRAG_TYPE);
 			setOldSectionPosition(idx);
+
+			initPhantom('section', section, {
+				x: targetElement.getBoundingClientRect().left,
+				y: targetElement.getBoundingClientRect().top
+			});
 		}
 	};
 
@@ -79,7 +88,20 @@ function App() {
 			sectionsBlocks[idxSection].id === oldSectionId
 		);
 	};
+	const dragHandlerSection = (e) => {
+		e.preventDefault();
 
+		const idxSection = Math.floor(e.pageX / WIDTH_SECTION);
+
+		handlePhantomPosition(
+			null,
+			null,
+			0,
+			0,
+			idxSection,
+			sectionsBlocks[idxSection].id === oldSectionId
+		);
+	};
 	const currentPositionTask = (e) => {
 		const sectionTop =
 			sectionsRef && sectionsRef.current.getBoundingClientRect().top;
@@ -92,7 +114,7 @@ function App() {
 
 		if (dragType === TASK_DRAG_TYPE) {
 			const sectionId = sectionsBlocks[idxSection]?.id;
-			clearPhantom();
+
 			e.target.style.visibility = 'visible';
 
 			const task = {
@@ -114,6 +136,7 @@ function App() {
 				section
 			});
 		}
+		clearPhantom();
 	};
 
 	const handleTaskPosition = (sectionId, taskId, taskElement) => {
@@ -129,12 +152,14 @@ function App() {
 		});
 	};
 
-	const handleAddTask = () => {
+	const handleAddSection = (sectionElement) => {
 		addSection({
 			id: uid(),
 			tasks: [],
 			name: 'New Section',
-			color: '#cbcbcb'
+			color: '#cbcbcb',
+			x: sectionElement.getBoundingClientRect().left,
+			Y: sectionElement.getBoundingClientRect().top
 		});
 	};
 
@@ -197,6 +222,8 @@ function App() {
 								endHandler={endHandler}
 								handleTaskPosition={handleTaskPosition}
 								idxPositionSection={idxPositionSection}
+								dragHandlerSection={dragHandlerSection}
+								sectionsRef={sectionsRef}
 								key={el.id}
 								addTask={() => createTask({ sectionId: el.id })}
 								section={el}
@@ -206,7 +233,10 @@ function App() {
 							/>
 						);
 					})}
-					<CreateSection addSection={handleAddTask} />
+					<CreateSection
+						createSectionsRef={createSectionsRef}
+						addSection={handleAddSection}
+					/>
 				</div>
 			</main>
 			{activeTask && (

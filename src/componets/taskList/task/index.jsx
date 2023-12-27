@@ -49,9 +49,9 @@ const Task = ({
 					return startHandler(
 						e,
 						task,
-						section.id,
-						idx,
-						currentTaskRef.current
+						section,
+						idx
+						// currentTaskRef.current
 					);
 				}}
 				onDrag={(e) => dragHandler(e)}
