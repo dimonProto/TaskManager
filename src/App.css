@@ -46,6 +46,7 @@ main {
     gap: 8px;
     padding: 8px;
     height: 100%;
+    position: relative;
 }
 
 .section {
@@ -55,6 +56,7 @@ main {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    z-index: 1;
 }
 
 .add--section {
@@ -66,6 +68,7 @@ main {
     border-radius: 8px;
     cursor: pointer;
     background-color: #ffffff50;
+    height: 100%;
 }
 
 .add--section svg, .section--header svg {
@@ -186,7 +189,13 @@ main {
     width: 252px;
     top: -50px;
 }
-
+.phantom--section{
+    position: absolute;
+    top: 8px;
+    width: 252px;
+    height: 100%;
+   z-index: 0;
+}
 .task:hover {
     background-color: #fdf8ff;
 }

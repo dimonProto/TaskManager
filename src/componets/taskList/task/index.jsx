@@ -50,8 +50,8 @@ const Task = ({
 						e,
 						task,
 						section,
-						idx
-						// currentTaskRef.current
+						idx,
+						currentTaskRef.current
 					);
 				}}
 				onDrag={(e) => dragHandler(e)}

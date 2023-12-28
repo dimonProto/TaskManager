@@ -79,15 +79,8 @@ export const usePhantom = () => {
 					</span>
 				)}
 				{phantomSection && (
-					<span
-						ref={phantomRef}
-						className="phantom"
-						style={{ height: '100%' }}
-					>
-						<div
-							className="add--section"
-							style={{ height: '100%' }}
-						></div>
+					<span ref={phantomRef} className="phantom--section">
+						<div className="add--section"></div>
 					</span>
 				)}
 			</>

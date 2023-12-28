@@ -38,6 +38,13 @@ export const sectionSlice = createSlice({
 		},
 		moveSection: (state, { payload }) => {
 			const { section } = payload;
+
+			const oldSectionXPosition = state.sections[section.oldPosition].x;
+			const newSectionXPosition = state.sections[section.newPosition].x;
+
+			state.sections[section.oldPosition].x = newSectionXPosition;
+			state.sections[section.newPosition].x = oldSectionXPosition;
+
 			const cut = state.sections.splice(section.oldPosition, 1)[0];
 			state.sections.splice(section.newPosition, 0, cut);
 		},

@@ -47,13 +47,12 @@ function App() {
 	const sectionsRef = useRef();
 	const createSectionsRef = useRef();
 
-	const startHandler = (e, task, section, idx, sectionsRef) => {
+	const startHandler = (e, task, section, idx) => {
 		const targetElement = e.target;
-		let id = section.id;
+		setTimeout(() => {
+			targetElement.style.visibility = 'hidden';
+		}, 10);
 		if (task) {
-			setTimeout(() => {
-				targetElement.style.visibility = 'hidden';
-			}, 10);
 			setOldTaskPosition(idx);
 			setOldSectionId(section.id);
 			initPhantom('task', task, {
@@ -115,8 +114,6 @@ function App() {
 		if (dragType === TASK_DRAG_TYPE) {
 			const sectionId = sectionsBlocks[idxSection]?.id;
 
-			e.target.style.visibility = 'visible';
-
 			const task = {
 				oldPosition: oldTaskPosition,
 				newPosition: currentPositionTask(e)
@@ -136,7 +133,9 @@ function App() {
 				section
 			});
 		}
+
 		clearPhantom();
+		e.target.style.visibility = 'visible';
 	};
 
 	const handleTaskPosition = (sectionId, taskId, taskElement) => {
@@ -211,9 +210,10 @@ function App() {
 	return (
 		<div className="App">
 			<Header />
-			<PhantomJSX />
+
 			<main>
 				<div className="main--section" ref={sectionsRef}>
+					<PhantomJSX />
 					{sectionsBlocks.map((el, idxPositionSection) => {
 						return (
 							<Section
